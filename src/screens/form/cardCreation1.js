@@ -12,8 +12,16 @@ const CardCreationScreen1 = ({ navigation }) => {
   const [area, setArea] = useState('');
   const [dormitorios, setDormitorios] = useState('');
   const [garagens, setGaragens] = useState('');
+  const [submitted, setSubmitted] = useState(false);
 
   const handleContinuar = () => {
+    setSubmitted(true);
+
+    if (!endereco || !area || !dormitorios || !garagens) {
+      alert('Por favor, preencha todos os campos.');
+      return;
+    }
+
     navigation.navigate('Card2'); 
   };
 
@@ -29,21 +37,28 @@ const CardCreationScreen1 = ({ navigation }) => {
           label="Endereço do Imóvel:"
           value={endereco} 
           onChangeText={setEndereco} 
+          hasError={submitted && !endereco}
         />
         <InputField 
           label="Tamanho da área construída:" 
           value={area} 
-          onChangeText={setArea} 
+          onChangeText={(text) => setArea(text.replace(/[^0-9]/g, ''))} 
+          keyboardType="numeric"
+          hasError={submitted && !area}
         />
         <InputField 
           label="Quantidade de Dormitórios:" 
           value={dormitorios} 
-          onChangeText={setDormitorios} 
+          onChangeText={(text) => setDormitorios(text.replace(/[^0-9]/g, ''))} 
+          keyboardType="numeric"
+          hasError={submitted && !dormitorios}
         />
         <InputField 
           label="Quantidade de Garagens:" 
           value={garagens} 
-          onChangeText={setGaragens} 
+          onChangeText={(text) => setGaragens(text.replace(/[^0-9]/g, ''))} 
+          keyboardType="numeric"
+          hasError={submitted && !garagens}
         />
 
         <RedButton title="Continuar" onPress={handleContinuar} />

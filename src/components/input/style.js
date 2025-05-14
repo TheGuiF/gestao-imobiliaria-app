@@ -18,6 +18,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     backgroundColor: '#fff',
   },
+  inputError: {
+    borderColor: 'red',
+  },
 });
 
 export default styles;

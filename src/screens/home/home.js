@@ -23,14 +23,14 @@ export default function HomeScreen({navigation}){
       </View>
 
       <View style={styles.area}>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('')}>
           <Feather name="folder" size={32} color="red" />
           <Text style={styles.buttonText}>
             Catalogo
           </Text>
         </TouchableOpacity>
         
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('')}>
           <Feather name="user" size={30} color="red" />
           <Text style={styles.buttonText}>
             Clientes

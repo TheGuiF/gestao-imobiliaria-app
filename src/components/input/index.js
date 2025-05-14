@@ -1,7 +1,8 @@
 import { TextInput, View, Text } from 'react-native';
 import styles from './style';
 
-const InputField = ({ label, value, onChangeText }) => {
+const InputField = ({ label, value, onChangeText, keyboardType = 'default', hasError = false }) => {
+  
   return (
     <View style={styles.container}>
       <Text style={styles.label}>{label}</Text>
@@ -9,8 +10,11 @@ const InputField = ({ label, value, onChangeText }) => {
         value={value}
         onChangeText={onChangeText}
         placeholder=" . . ."
-        style={styles.input}
+        style={[styles.input, hasError && styles.inputError]}
         placeholderTextColor="#999"
+        keyboardType={keyboardType}
+        inputMode={keyboardType === 'numeric' ? 'numeric' : undefined}
+
       />
     </View>
   );

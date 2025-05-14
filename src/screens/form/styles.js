@@ -20,6 +20,10 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     elevation: 4,
   },
+  error: {
+    color: 'red',
+    marginBottom: 10,
+  },
 });
 
 export default styles;
