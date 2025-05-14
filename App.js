@@ -1,10 +1,9 @@
-import * as React from 'react';
-import { View, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import HomeScreen from './src/screens/home/home'
-import CardScreen from './src/screens/form/card'
+import CardCreationScreen1 from './src/screens/form/cardCreation1'
+import CardCreationScreen2 from './src/screens/form/cardCreation2'
 
 const Stack = createNativeStackNavigator()
 
@@ -12,8 +11,9 @@ const Stack = createNativeStackNavigator()
      return (
      <NavigationContainer>
          <Stack.Navigator>
-            <Stack.Screen name='Home' component={HomeScreen} />
-            <Stack.Screen name='Card' component={CardScreen} />
+            <Stack.Screen name='Home' component={HomeScreen} options={{headerShown: false}}/>
+            <Stack.Screen name='Card1' component={CardCreationScreen1} options={{headerShown: false}}/>
+            <Stack.Screen name='Card2' component={CardCreationScreen2} options={{headerShown: false}}/>
          </Stack.Navigator>
      </NavigationContainer>
      );

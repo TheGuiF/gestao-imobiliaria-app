@@ -1,0 +1,59 @@
+// styles.js (arquivo de estilo)
+import { StyleSheet } from 'react-native';
+
+const styles = StyleSheet.create({
+  container:{
+    flex: 1,
+    padding: 16,
+    alignItems: 'center',
+    justifyContent: 'center', 
+    backgroundColor: "#F5F5F5",
+  },
+  quote:{
+    fontSize: 24,
+    marginBottom: 32,
+    color: '#333',
+    width: '85%',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    position: 'absolute',
+    top: "10%"
+
+  },
+  buttonAdd:{
+      elevation: 3,
+      width: 310,
+      height: 120,
+      borderRadius: 8,
+      marginBottom: 18,
+      outlineWidth: 0.3,
+      outlineColor: 'red',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: 'white',
+  },
+  button:{
+      elevation: 3,
+      width: 145,
+      height: 120,
+      borderRadius: 8,
+      marginBottom: 18,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: 'white',
+  },
+  buttonText:{
+      fontSize: 25,
+      color: "red",
+      fontWeight: 'bold'
+  },
+  area:{
+    gap: 15,
+    marginTop: 200,
+    bottom: '6%',
+    flexDirection: 'row',
+    position: 'absolute',
+  },
+});
+
+export default styles;

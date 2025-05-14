@@ -1,6 +1,9 @@
-import * as React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Button } from 'react-native'
+import { View, Text, TouchableOpacity } from 'react-native'
+import { MaterialIcons } from '@expo/vector-icons'
+import Feather from '@expo/vector-icons/Feather'
 
+
+import styles from './styles'
 
 export default function HomeScreen({navigation}){
   return(
@@ -9,61 +12,31 @@ export default function HomeScreen({navigation}){
         Gerencie seus imóveis com mais agilidade e precisão
       </Text>
 
-        <Button title='Ir para Card' onPress={() => navigation.navigate('Card')} />
-      
-      <View>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>
+      <View>  
+        <TouchableOpacity style={styles.buttonAdd} onPress={() => navigation.navigate('Card1')}>
+          <MaterialIcons name="home" size={32} color={"red"} />
+
+          <Text style={styles.buttonText}> 
             Adicionar Imóvel
           </Text>
         </TouchableOpacity>
       </View>
 
-      <View sytle={styles.navigation}>
+      <View style={styles.area}>
         <TouchableOpacity style={styles.button}>
+          <Feather name="folder" size={32} color="red" />
           <Text style={styles.buttonText}>
             Catalogo
           </Text>
         </TouchableOpacity>
+        
         <TouchableOpacity style={styles.button}>
+          <Feather name="user" size={30} color="red" />
           <Text style={styles.buttonText}>
             Clientes
           </Text>
         </TouchableOpacity>
       </View>
     </View>
-  )
+  ) 
 }
-
-const styles = StyleSheet.create({
-  container:{
-    flex: 1,
-    backgroundColor: "grey",
-    justifyContent: 'center', 
-    alignItems: 'center',
-  },
-  quote:{
-    textAlign: 'center',
-    fontWeight: 'bold',
-    width: '80%',
-    fontSize: 24,
-    marginBottom: 40,
-  },
-  button:{
-    backgroundColor: 'white',
-    width: 300,
-    height: 100,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 8,
-    marginBottom: 18,
-  },
-  buttonText:{
-    color: "red",
-    fontSize: 25,
-    fontWeight: 'bold'
-  },
-  navigation:{
-    textAlign: 'right'
-  }
-})
