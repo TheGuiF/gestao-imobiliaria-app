@@ -1,18 +1,19 @@
 import { StyleSheet } from "react-native";
+import { colors } from "../../styles/colors";
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: '#870029',
-    paddingVertical: 12,
+    backgroundColor: colors.red[200],
+    paddingVertical: 16,
     paddingHorizontal: 25,
     borderRadius: 12,
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 10,
   },
   text: {
-    color: '#fff',
-    fontWeight: '600',
-    fontSize: 16,
+    color: colors.gray[100],
+    fontWeight: "600",
+    fontSize: 18,
   },
 });
 

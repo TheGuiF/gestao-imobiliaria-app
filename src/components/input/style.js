@@ -1,25 +1,26 @@
 import { StyleSheet } from "react-native";
+import { colors } from "../../styles/colors";
 
 const styles = StyleSheet.create({
   container: {
     marginBottom: 12,
   },
   label: {
-    fontWeight: '500',
+    fontWeight: "600",
     marginBottom: 4,
-    color: '#333',
+    color: colors.gray[600],
   },
   input: {
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: colors.gray[300],
     borderRadius: 12,
     paddingHorizontal: 10,
     paddingVertical: 8,
     fontSize: 16,
-    backgroundColor: '#fff',
+    backgroundColor: colors.gray[100],
   },
   inputError: {
-    borderColor: 'red',
+    borderColor: colors.red[100],
   },
 });
 
