@@ -1,25 +1,27 @@
 import { useState } from "react";
-import { View, ScrollView, KeyboardAvoidingView } from "react-native";
+import { View, ScrollView, KeyboardAvoidingView, Alert } from "react-native";
 
 import Feather from "@expo/vector-icons/Feather";
-
 import InputField from "../../components/input";
 import RedButton from "../../components/redButton";
 import styles from "./styles";
 import { colors } from "../../styles/colors";
+import { useCardCreation } from "../../contexts/cardCreationContext";
 
 const CardCreationScreen1 = ({ navigation }) => {
-  const [endereco, setEndereco] = useState("");
-  const [area, setArea] = useState("");
-  const [dormitorios, setDormitorios] = useState("");
-  const [garagens, setGaragens] = useState("");
+  const { formData, updateFormData } = useCardCreation();
   const [submitted, setSubmitted] = useState(false);
 
   const handleContinuar = () => {
     setSubmitted(true);
 
+    const { endereco, area, dormitorios, garagens } = formData;
+
     if (!endereco || !area || !dormitorios || !garagens) {
-      alert("Por favor, preencha todos os campos.");
+      Alert.alert(
+        "Campos obrigatórios",
+        "Por favor, preencha todos os campos."
+      );
       return;
     }
 
@@ -36,30 +38,39 @@ const CardCreationScreen1 = ({ navigation }) => {
         <View style={styles.card}>
           <InputField
             label="Endereço do Imóvel:"
-            value={endereco}
-            onChangeText={setEndereco}
-            hasError={submitted && !endereco}
+            value={formData.endereco}
+            onChangeText={(text) => updateFormData({ endereco: text })}
+            hasError={submitted && !formData.endereco}
           />
+
           <InputField
             label="Tamanho da área construída:"
-            value={area}
-            onChangeText={(text) => setArea(text.replace(/[^0-9]/g, ""))}
+            value={formData.area}
+            onChangeText={(text) =>
+              updateFormData({ area: text.replace(/[^0-9]/g, "") })
+            }
             keyboardType="numeric"
-            hasError={submitted && !area}
+            hasError={submitted && !formData.area}
           />
+
           <InputField
             label="Quantidade de Dormitórios:"
-            value={dormitorios}
-            onChangeText={(text) => setDormitorios(text.replace(/[^0-9]/g, ""))}
+            value={formData.dormitorios}
+            onChangeText={(text) =>
+              updateFormData({ dormitorios: text.replace(/[^0-9]/g, "") })
+            }
             keyboardType="numeric"
-            hasError={submitted && !dormitorios}
+            hasError={submitted && !formData.dormitorios}
           />
+
           <InputField
             label="Quantidade de Garagens:"
-            value={garagens}
-            onChangeText={(text) => setGaragens(text.replace(/[^0-9]/g, ""))}
+            value={formData.garagens}
+            onChangeText={(text) =>
+              updateFormData({ garagens: text.replace(/[^0-9]/g, "") })
+            }
             keyboardType="numeric"
-            hasError={submitted && !garagens}
+            hasError={submitted && !formData.garagens}
           />
 
           <RedButton title="Continuar" onPress={handleContinuar} />
