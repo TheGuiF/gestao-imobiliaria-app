@@ -2,24 +2,7 @@ import { StyleSheet } from "react-native";
 import { colors } from "../../styles/colors";
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.gray[200],
-  },
-  swiperContent: {
-    flexDirection: "row",
-    height: 250,
-    width: "100%",
-  },
-  title: {
-    fontSize: 28,
-    color: "red",
-    fontWeight: "600",
-  },
-  subTitle: {
-    fontSize: 24,
-  },
-  icons: {
+    icons: {
     backgroundColor: colors.gray[100],
     alignItems: 'center',
     borderRadius: 25,
@@ -38,6 +21,6 @@ const styles = StyleSheet.create({
     fontWeight: 600,
     color: colors.red[100],
   },
-});
+})
 
 export default styles;

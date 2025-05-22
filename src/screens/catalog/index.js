@@ -19,7 +19,7 @@ const CatalogScreen = ({ navigation }) => {
           <Cards
             img={require("../../assets/image2.jpg")}
             cost="R$950.000,00"
-            onClick={() => alert("Clicou")}
+            onClick={() => navigation.navigate("")}
           >
             Apartamento em Braga, Cabo Frio/RJ
           </Cards>

@@ -27,7 +27,7 @@ export default function Cards(props) {
           </Text>
           <Text style={[styles.cardText, { width: "40%" }]}>
             {" "}
-            Indisponivel{" "}
+            {props.status}{" "}
           </Text>
         </View>
       </View>

@@ -34,7 +34,7 @@ export default function HomeScreen({ navigation }) {
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate("")}
+          onPress={() => navigation.navigate("AddImage")}
         >
           <Feather name="user" size={30} color={colors.red[100]} />
           <Text style={styles.buttonText}>Clientes</Text>
