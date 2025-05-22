@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: "10%",
   },
-  buttonAdd: {
+  button: {
     elevation: 3,
     width: 310,
     height: 120,
@@ -28,16 +28,6 @@ const styles = StyleSheet.create({
     marginBottom: 18,
     outlineWidth: 0.3,
     outlineColor: colors.red[100],
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: colors.gray[100],
-  },
-  button: {
-    elevation: 3,
-    width: 145,
-    height: 120,
-    borderRadius: 8,
-    marginBottom: 18,
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: colors.gray[100],
@@ -51,7 +41,7 @@ const styles = StyleSheet.create({
     gap: 15,
     marginTop: 200,
     bottom: "6%",
-    flexDirection: "row",
+   
     position: "absolute",
   },
 });

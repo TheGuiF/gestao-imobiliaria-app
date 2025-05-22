@@ -12,18 +12,16 @@ export default function HomeScreen({ navigation }) {
         Gerencie seus imóveis com mais agilidade e precisão
       </Text>
 
-      <View>
+      <View style={styles.area}>
         <TouchableOpacity
-          style={styles.buttonAdd}
+          style={styles.button}
           onPress={() => navigation.navigate("CardCreation1")}
         >
           <MaterialIcons name="home" size={32} color={colors.red[100]} />
 
           <Text style={styles.buttonText}>Adicionar Imóvel</Text>
         </TouchableOpacity>
-      </View>
 
-      <View style={styles.area}>
         <TouchableOpacity
           style={styles.button}
           onPress={() => navigation.navigate("Catalog")}
@@ -32,13 +30,7 @@ export default function HomeScreen({ navigation }) {
           <Text style={styles.buttonText}>Catalogo</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate("")}
-        >
-          <Feather name="user" size={30} color={colors.red[100]} />
-          <Text style={styles.buttonText}>Clientes</Text>
-        </TouchableOpacity>
+       
       </View>
     </View>
   );
