@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Alert,
   View,
@@ -11,9 +11,10 @@ import * as ImagePicker from "expo-image-picker";
 
 import styles from "./styles";
 import RedButton from "../redButton";
+import { useCardCreation } from "../../contexts/cardCreationContext";
 
 export default function AddImages() {
-  const [images, setImages] = useState([]);
+  const { formData, updateFormData } = useCardCreation();
 
   const pickImages = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -31,15 +32,19 @@ export default function AddImages() {
     if (!result.canceled) {
       const newImages = result.assets.map((asset) => ({
         uri: asset.uri,
-        id: asset.assetId || asset.uri, // fallback
+        id: asset.assetId || asset.uri,
       }));
 
-      setImages((prev) => [...prev, ...newImages]);
+      // Atualiza no contexto
+      updateFormData({
+        imagens: [...formData.imagens, ...newImages],
+      });
     }
   };
 
   const removeImage = (id) => {
-    setImages((prev) => prev.filter((img) => img.id !== id));
+    const updatedImages = formData.imagens.filter((img) => img.id !== id);
+    updateFormData({ imagens: updatedImages });
   };
 
   return (
@@ -50,24 +55,21 @@ export default function AddImages() {
         onPress={pickImages}
       />
 
-      {images.length > 0 && (
+      {formData.imagens.length > 0 && (
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
           style={{ marginVertical: 20, paddingTop: 10 }}
         >
-          {images.map((img) => (
+          {formData.imagens.map((img) => (
             <View
               key={img.id}
               style={{ marginRight: 10, position: "relative" }}
             >
-              <Image
-                source={{ uri: img.uri }}
-                style={styles.image}
-              />
+              <Image source={{ uri: img.uri }} style={styles.image} />
               <TouchableOpacity
-                onPress={() => removeImage(img.id)}   //Botão pra remover as imagens
-                style={styles.removeButton}           //selecionadas
+                onPress={() => removeImage(img.id)}
+                style={styles.removeButton}
               >
                 <Text style={styles.removeButtonText}>X</Text>
               </TouchableOpacity>

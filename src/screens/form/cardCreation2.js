@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View, ScrollView, KeyboardAvoidingView } from "react-native";
+import { Alert, View, ScrollView, KeyboardAvoidingView } from "react-native";
 
 import Feather from "@expo/vector-icons/Feather";
 
@@ -7,24 +7,26 @@ import InputField from "../../components/input";
 import RedButton from "../../components/redButton";
 import styles from "./styles";
 import { colors } from "../../styles/colors";
+import { useCardCreation } from "../../contexts/cardCreationContext";
 
 const CardCreationScreen2 = ({ navigation }) => {
-  const [valorVenda, setValorVenda] = useState("");
-  const [situacao, setSituacao] = useState("");
-  const [iptu, setIptu] = useState("");
-  const [tipoImovel, setTipoImovel] = useState("");
+  const { formData, updateFormData } = useCardCreation();
   const [submitted, setSubmitted] = useState(false);
 
   const handleContinuar = () => {
     setSubmitted(true);
 
+    const { valorVenda, situacao, iptu, tipoImovel } = formData;
+
     if (!valorVenda || !situacao || !iptu || !tipoImovel) {
-      alert("Por favor, preencha todos os campos."); //Verifica se todos os campos foram preenchidos
+      Alert.alert(
+        "Campos obrigatórios",
+        "Por favor, preencha todos os campos."
+      );
       return;
     }
 
-    navigation.navigate("CardCreation3"); //Volta para a página inicial
-
+    navigation.navigate("CardCreation3");
   };
 
   return (
@@ -39,29 +41,33 @@ const CardCreationScreen2 = ({ navigation }) => {
         <View style={styles.card}>
           <InputField
             label="Valor da Venda:"
-            value={valorVenda}
-            onChangeText={(text) => setValorVenda(text.replace(/[^0-9]/g, ""))}
+            value={formData.valorVenda}
+            onChangeText={(text) =>
+              updateFormData({ valorVenda: text.replace(/[^0-9]/g, "") })
+            }
             keyboardType="numeric"
-            hasError={submitted && !valorVenda}
+            hasError={submitted && !formData.valorVenda}
           />
           <InputField
             label="Situação:"
-            value={situacao}
-            onChangeText={setSituacao}
-            hasError={submitted && !situacao}
+            value={formData.situacao}
+            onChangeText={(text) => updateFormData({ situacao: text })}
+            hasError={submitted && !formData.situacao}
           />
           <InputField
             label="Taxa de IPTU anual:"
-            value={iptu}
-            onChangeText={(text) => setIptu(text.replace(/[^0-9]/g, ""))}
+            value={formData.iptu}
+            onChangeText={(text) =>
+              updateFormData({ iptu: text.replace(/[^0-9]/g, "") })
+            }
             keyboardType="numeric"
-            hasError={submitted && !iptu}
+            hasError={submitted && !formData.iptu}
           />
           <InputField
             label="Tipo de Imóvel:"
-            value={tipoImovel}
-            onChangeText={setTipoImovel}
-            hasError={submitted && !tipoImovel}
+            value={formData.tipoImovel}
+            onChangeText={(text) => updateFormData({ tipoImovel: text })}
+            hasError={submitted && !formData.tipoImovel}
           />
 
           <RedButton title="Continuar" onPress={handleContinuar} />

@@ -1,16 +1,18 @@
 import { View, Image, StyleSheet } from "react-native";
-import Swiper from "react-native-swiper"; //Biblioteca do Carrosel
+import Swiper from "react-native-swiper";
 import { colors } from "../../styles/colors";
 
-export default function SwiperComponent() {
+export default function SwiperComponent({ images = [] }) {
+  const hasImages = images && images.length > 0;
+
   return (
     <Swiper
       dotStyle={{
         backgroundColor: colors.gray[600],
         borderColor: colors.gray[600],
-        borderWidth: 2, //Definição dos formatos
-        width: 2,       //e cores das cores nos
-        height: 2,      //nos modos ativo e desativado
+        borderWidth: 2,
+        width: 2,
+        height: 2,
         borderRadius: 10,
       }}
       activeDotColor={colors.gray[100]}
@@ -22,26 +24,20 @@ export default function SwiperComponent() {
         borderRadius: 10,
       }}
     >
-      <View style={styles.slide}>
-        <Image                        //Arrumar forma de pegar a imagem enviada
-          source={require("../../assets/image1.png")} //  <---
-          style={{ width: "100%", height: 250 }}
-        />
-      </View>
-
-      <View style={styles.slide}>
-        <Image
-          source={require("../../assets/image2.jpg")} //  <---
-          style={{ width: "100%", height: 250 }}
-        />
-      </View>
-
-      <View style={styles.slide}>
-        <Image
-          source={require("../../assets/image3.jpg")} //  <---
-          style={{ width: "100%", height: 250 }}
-        />
-      </View>
+      {hasImages ? (
+        images.map((uri, index) => (
+          <View key={index} style={styles.slide}>
+            <Image source={{ uri }} style={{ width: "100%", height: 250 }} />
+          </View>
+        ))
+      ) : (
+        <View style={styles.slide}>
+          <Image
+            source={require("../../assets/default.png")}
+            style={{ width: "100%", height: 250 }}
+          />
+        </View>
+      )}
     </Swiper>
   );
 }
