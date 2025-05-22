@@ -1,11 +1,15 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import Feather from "@expo/vector-icons/Feather";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
 import HomeScreen from "./src/screens/home/home";
 import CardCreationScreen1 from "./src/screens/form/cardCreation1";
 import CardCreationScreen2 from "./src/screens/form/cardCreation2";
+import CardCreationScreen3 from "./src/screens/form/cardCreation3";
 import CatalogScreen from "./src/screens/catalog/index";
 import DetailScreen from "./src/screens/details/index";
+import { TouchableOpacity, View } from "react-native";
 
 const Stack = createNativeStackNavigator();
 
@@ -29,6 +33,11 @@ function App() {
           options={{ headerShown: false }}
         />
         <Stack.Screen
+          name="CardCreation3"
+          component={CardCreationScreen3}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
           name="Catalog"
           component={CatalogScreen}
           options={{ headerShown: false }}
@@ -36,7 +45,21 @@ function App() {
         <Stack.Screen
           name="Details"
           component={DetailScreen}
-          options={{ headerTitle: "Detalhes da casa" }}
+          options={({ navigation }) => ({
+            title: "Detalhes",
+            headerRight: () => (
+              <View style={{ flexDirection: "row", gap: 16, marginRight: 10 }}>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("EditImages")}
+                >
+                  <Feather name="edit" size={22} color="black" />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => console.log("Compartilhar")}>
+                  <MaterialIcons name="share" size={24} color="black" />
+                </TouchableOpacity>
+              </View>
+            ),
+          })}
         />
       </Stack.Navigator>
     </NavigationContainer>
