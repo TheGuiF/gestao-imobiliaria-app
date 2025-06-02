@@ -12,13 +12,16 @@ const styles = StyleSheet.create({
   },
   quote: {
     fontSize: 24,
-    fontWeight: 600,
-    marginBottom: 32,
+    fontWeight: 800,
     color: colors.red[300],
-    width: "85%",
     textAlign: "center",
     position: "absolute",
-    top: "10%",
+  },
+  img: {
+    width: 350,
+    height: 350,
+    alignSelf: "center",
+    marginBottom: 250,
   },
   button: {
     elevation: 3,
@@ -27,21 +30,19 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginBottom: 18,
     outlineWidth: 0.3,
-    outlineColor: colors.red[100],
     alignItems: "center",
     justifyContent: "center",
+    outlineColor: colors.red[300],
     backgroundColor: colors.gray[100],
   },
   buttonText: {
     fontSize: 25,
-    color: colors.red[100],
+    color: colors.red[200],
     fontWeight: 600,
   },
   area: {
-    gap: 15,
     marginTop: 200,
     bottom: "6%",
-   
     position: "absolute",
   },
 });
