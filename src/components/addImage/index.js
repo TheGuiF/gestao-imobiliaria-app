@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Alert,
   View,
@@ -13,37 +13,44 @@ import styles from "./styles";
 import RedButton from "../redButton";
 import { useCardCreation } from "../../contexts/cardCreationContext";
 
-export default function AddImages() {
+export default function AddImages({ initialImages }) {
   const { formData, updateFormData } = useCardCreation();
 
-  const pickImages = async () => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status !== "granted") {
-      Alert.alert("Permissão necessária", "Permita acesso à galeria.");
-      return;
+  useEffect(() => {
+    if (initialImages) {
+      updateFormData({ imagens: initialImages });
     }
+  }, [initialImages]);
 
-    const result = await ImagePicker.launchImageLibraryAsync({
-      allowsMultipleSelection: true,
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      quality: 1,
-    });
+  const pickImages = async () => {
+    try {
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== "granted") {
+        Alert.alert("Permissão necessária", "Permita acesso à galeria.");
+        return;
+      }
 
-    if (!result.canceled) {
-      const newImages = result.assets.map((asset) => ({
-        uri: asset.uri,
-        id: asset.assetId || asset.uri,
-      }));
-
-      // Atualiza no contexto
-      updateFormData({
-        imagens: [...formData.imagens, ...newImages],
+      const result = await ImagePicker.launchImageLibraryAsync({
+        allowsMultipleSelection: true,
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        quality: 1,
+        base64: false,
       });
+
+      if (!result.canceled && result.assets) {
+        const newImages = result.assets.map((asset) => asset.uri);
+        updateFormData({
+          imagens: [...(formData.imagens || []), ...newImages],
+        });
+      }
+    } catch (error) {
+      console.error('Erro ao selecionar imagens:', error);
+      Alert.alert('Erro', 'Não foi possível selecionar as imagens.');
     }
   };
 
-  const removeImage = (id) => {
-    const updatedImages = formData.imagens.filter((img) => img.id !== id);
+  const removeImage = (uri) => {
+    const updatedImages = formData.imagens.filter((img) => img !== uri);
     updateFormData({ imagens: updatedImages });
   };
 
@@ -55,20 +62,25 @@ export default function AddImages() {
         onPress={pickImages}
       />
 
-      {formData.imagens.length > 0 && (
+      {formData.imagens && formData.imagens.length > 0 && (
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
-          style={{ marginVertical: 20, paddingTop: 10 }}
+          style={styles.imageScroll}
         >
-          {formData.imagens.map((img) => (
+          {formData.imagens.map((uri, index) => (
             <View
-              key={img.id}
-              style={{ marginRight: 10, position: "relative" }}
+              key={index}
+              style={styles.imageContainer}
             >
-              <Image source={{ uri: img.uri }} style={styles.image} />
+              <Image 
+                source={{ uri }} 
+                style={styles.image}
+                defaultSource={require("../../assets/default.png")}
+                resizeMode="cover"
+              />
               <TouchableOpacity
-                onPress={() => removeImage(img.id)}
+                onPress={() => removeImage(uri)}
                 style={styles.removeButton}
               >
                 <Text style={styles.removeButtonText}>X</Text>

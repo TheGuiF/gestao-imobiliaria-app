@@ -15,10 +15,9 @@ export default function HomeScreen({ navigation }) {
       <View>
         <TouchableOpacity
           style={styles.buttonAdd}
-          onPress={() => navigation.navigate("CardCreation1")}
+          onPress={() => navigation.navigate("Form")}
         >
           <MaterialIcons name="home" size={32} color={colors.red[100]} />
-
           <Text style={styles.buttonText}>Adicionar Imóvel</Text>
         </TouchableOpacity>
       </View>
@@ -26,7 +25,7 @@ export default function HomeScreen({ navigation }) {
       <View style={styles.area}>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate("Catalog")}
+          onPress={() => navigation.navigate("Catálogo")}
         >
           <Feather name="folder" size={32} color={colors.red[100]} />
           <Text style={styles.buttonText}>Catalogo</Text>
@@ -34,7 +33,7 @@ export default function HomeScreen({ navigation }) {
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate("")}
+          onPress={() => navigation.navigate("Clientes")}
         >
           <Feather name="user" size={30} color={colors.red[100]} />
           <Text style={styles.buttonText}>Clientes</Text>

@@ -10,11 +10,15 @@ export default function Cards(props) {
 
     return `${desc.substring(0, 57)}...`;
   }
+
+  const defaultImage = require("../../assets/default.png");
+
   return (
     <TouchableOpacity style={styles.container} onPress={props.onClick}>
       <Image                    //Criar funções da qual pega os dados colocados
-        source={props.img}      //no "CardCreationScreen" e que com eles salvos
+        source={typeof props.img === 'string' ? { uri: props.img } : props.img}
         style={styles.cardImg}  //de para criar os Cards e salvar os mesmos
+        defaultSource={defaultImage}
       />
       <View style={{ maxWidth: "65%", rowGap: 20 }}>
         <Text style={styles.cardTitle} numberOfLines={2}>

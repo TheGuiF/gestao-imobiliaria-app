@@ -1,72 +1,54 @@
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { TouchableOpacity, View } from "react-native";
-import Feather from "@expo/vector-icons/Feather";
+import React, { useEffect, useState } from 'react';
+import { View, Text } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { CardCreationProvider } from './src/contexts/cardCreationContext';
+import { ClientesProvider } from './src/contexts/clientesContext';
+import { initDatabase } from './src/services/sqlite';
+import Routes from './src/routes';
 
-import { CardCreationProvider } from "./src/contexts/cardCreationContext";
-import HomeScreen from "./src/screens/home/home";
-import CardCreationScreen1 from "./src/screens/form/cardCreation1";
-import CardCreationScreen2 from "./src/screens/form/cardCreation2";
-import CardCreationScreen3 from "./src/screens/form/cardCreation3";
-import CatalogScreen from "./src/screens/catalog/index";
-import DetailScreen from "./src/screens/details/index";
-import DeleteButton from "./src/components/deleteButton";
+export default function App() {
+  const [isReady, setIsReady] = useState(false);
+  const [error, setError] = useState(null);
 
-const Stack = createNativeStackNavigator();
+  useEffect(() => {
+    const initApp = async () => {
+      try {
+        console.log('Iniciando inicialização do banco de dados...');
+        await initDatabase();
+        console.log('Banco de dados inicializado com sucesso');
+        setIsReady(true);
+      } catch (err) {
+        console.error('Erro ao inicializar banco de dados:', err);
+        setError(err.message);
+      }
+    };
 
-function App() {
+    initApp();
+  }, []);
+
+  if (error) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text>Erro ao inicializar o app: {error}</Text>
+      </View>
+    );
+  }
+
+  if (!isReady) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text>Carregando...</Text>
+      </View>
+    );
+  }
+
   return (
-    <CardCreationProvider>
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen
-            name="Home"
-            component={HomeScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="CardCreation1"
-            component={CardCreationScreen1}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="CardCreation2"
-            component={CardCreationScreen2}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="CardCreation3"
-            component={CardCreationScreen3}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Catalog"
-            component={CatalogScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Details"
-            component={DetailScreen}
-            options={({ navigation }) => ({
-              title: "Detalhes",
-              headerRight: () => (
-                <View
-                  style={{ flexDirection: "row", gap: 16, marginRight: 10 }}
-                >
-                  <TouchableOpacity
-                    onPress={() => navigation.navigate("EditImages")}
-                  >
-                    <Feather name="edit" size={22} color="black" />
-                  </TouchableOpacity>
-                  <DeleteButton/>
-                </View>
-              ),
-            })}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </CardCreationProvider>
+    <NavigationContainer>
+      <CardCreationProvider>
+        <ClientesProvider>
+          <Routes />
+        </ClientesProvider>
+      </CardCreationProvider>
+    </NavigationContainer>
   );
 }
-
-export default App;
