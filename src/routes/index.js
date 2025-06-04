@@ -32,28 +32,28 @@ export default function Routes() {
         name="Catálogo"
         component={CatalogScreen}
         options={{
-          title: "Catálogo",
+          headerShown: false,
         }}
       />
       <Stack.Screen
         name="Form"
         component={FormScreen}
         options={{
-          title: "Novo Imóvel",
+          headerShown: false,
         }}
       />
       <Stack.Screen
         name="CardCreation2"
         component={CardCreationScreen2}
         options={{
-          title: "Novo Imóvel",
+          headerShown: false,
         }}
       />
       <Stack.Screen
         name="CardCreation3"
         component={CardCreationScreen3}
         options={{
-          title: "Novo Imóvel",
+          headerShown: false,
         }}
       />
       <Stack.Screen

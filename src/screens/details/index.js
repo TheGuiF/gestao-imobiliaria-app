@@ -50,9 +50,6 @@ const DetailScreen = ({ route, navigation }) => {
           >
             <Feather name="edit" size={22} color="black" />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => console.log("Compartilhar")}>
-            <MaterialIcons name="share" size={24} color="black" />
-          </TouchableOpacity>
           <TouchableOpacity
             onPress={async () => {
               try {
