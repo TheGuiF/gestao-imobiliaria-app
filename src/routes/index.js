@@ -7,7 +7,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "../screens/home/home";
 import CatalogScreen from "../screens/catalog";
 import DetailScreen from "../screens/details";
-import FormScreen from "../screens/form/cardCreation1";
+import CardCreationScreen1 from "../screens/form/cardCreation1";
 import CardCreationScreen2 from "../screens/form/cardCreation2";
 import CardCreationScreen3 from "../screens/form/cardCreation3";
 import EditPropertyScreen from "../screens/editProperty";
@@ -22,7 +22,7 @@ export default function Routes() {
         name="Home"
         component={HomeScreen}
         options={{
-          title: "Detalhes",
+          headerShown: false,
         }}
       />
       <Stack.Screen
@@ -33,31 +33,31 @@ export default function Routes() {
         }}
       />
       <Stack.Screen
-        name="Catálogo"
+        name="Catalog"
         component={CatalogScreen}
         options={{
-          title: "retornar",
+          headerShown: false,
         }}
       />
       <Stack.Screen
-        name="Form"
-        component={FormScreen}
+        name="CardCreation1"
+        component={CardCreationScreen1}
         options={{
-          title: "Novo Imóvel",
+          headerShown: false,
         }}
       />
       <Stack.Screen
         name="CardCreation2"
         component={CardCreationScreen2}
         options={{
-          title: "Novo Imóvel",
+          headerShown: false,
         }}
       />
       <Stack.Screen
         name="CardCreation3"
         component={CardCreationScreen3}
         options={{
-          title: "Novo Imóvel",
+          headerShown: false,
         }}
       />
       <Stack.Screen

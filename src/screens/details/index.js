@@ -1,10 +1,11 @@
-import { useLayoutEffect, useEffect, useState } from "react";
+import React, { useLayoutEffect, useEffect, useState } from "react";
 import {
   View,
   Text,
   ScrollView,
-  TouchableOpacity,
   StyleSheet,
+  TouchableOpacity,
+  Alert,
 } from "react-native";
 import { useRoute } from "@react-navigation/native";
 
@@ -15,8 +16,10 @@ import Feather from "@expo/vector-icons/Feather";
 import { Separator } from "../../components/separator";
 import SwiperComponent from "../../components/swiper";
 import InfoItem from "../../components/infoItem";
+import DeleteButton from "../../components/deleteButton";
 import { colors } from "../../styles/colors";
 import { useCardCreation } from "../../contexts/cardCreationContext";
+import styles from "./styles";
 
 const DetailScreen = ({ navigation }) => {
   const route = useRoute();
@@ -24,16 +27,12 @@ const DetailScreen = ({ navigation }) => {
 
   const { deletarImovel, buscarImovelPorId } = useCardCreation();
   const [imovel, setImovel] = useState(initialImovel);
+  const [modalVisible, setModalVisible] = useState(false);
 
-  console.log("📦 Parâmetros recebidos em Details:", route);
-
-  // Se não houver parâmetro, exibe fallback
   if (!initialImovel) {
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Text style={{ color: "red", fontSize: 16, fontWeight: "bold" }}>
-          Nenhum imóvel selecionado.
-        </Text>
+      <View style={styles.centered}>
+        <Text style={styles.errorText}>Nenhum imóvel selecionado.</Text>
       </View>
     );
   }
@@ -59,34 +58,23 @@ const DetailScreen = ({ navigation }) => {
           >
             <Feather name="edit" size={22} color="black" />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => console.log("Compartilhar")}>
-            <MaterialIcons name="share" size={24} color="black" />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={async () => {
-              try {
-                await deletarImovel(imovel.id);
-                navigation.goBack();
-              } catch (error) {
-                console.error("Erro ao deletar imóvel:", error);
-              }
-            }}
-          >
+          <TouchableOpacity onPress={() => setModalVisible(true)}>
             <Feather name="trash-2" size={22} color="red" />
           </TouchableOpacity>
         </View>
       ),
     });
-  }, [navigation, deletarImovel, imovel]);
+  }, [navigation, imovel]);
 
   const defaultImage = require("../../assets/default.png");
 
   const formatCurrency = (value) => {
-    if (!value) return "0";
-    return value
-      .toString()
-      .replace(/\D/g, "")
-      .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+    if (!value) return "0,00";
+    const number = parseFloat(value.toString().replace(/\D/g, "")) / 100;
+    return number.toLocaleString("pt-BR", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
   };
 
   return (
@@ -140,50 +128,37 @@ const DetailScreen = ({ navigation }) => {
       <Separator />
 
       <View>
-        <Text
-          style={[
-            styles.title,
-            { color: colors.gray[600] },
-            { textAlign: "center" },
-            { marginVertical: "2%" },
-          ]}
-        >
-          Taxas
-        </Text>
+        <Text style={[styles.title, styles.taxTitle]}>Taxas</Text>
       </View>
 
       <View style={{ alignItems: "center" }}>
         <Separator width="80%" />
-        <View style={{ flexDirection: "row", gap: "40%" }}>
-          <Text style={{ fontWeight: "600" }}>IPTU Anual</Text>
-          <Text style={{ color: colors.red[100], fontWeight: "600" }}>
-            R$ {formatCurrency(imovel.iptu)}
-          </Text>
+        <View style={styles.taxRow}>
+          <Text style={styles.taxLabel}>IPTU Anual</Text>
+          <Text style={styles.taxValue}>R$ {formatCurrency(imovel.iptu)}</Text>
         </View>
         <Separator width="80%" />
       </View>
+
+      {/* Modal de confirmação */}
+      <DeleteButton
+        visible={modalVisible}
+        onCancel={() => setModalVisible(false)}
+        onConfirm={async () => {
+          try {
+            await deletarImovel(imovel.id);
+            setModalVisible(false);
+            navigation.goBack();
+          } catch (error) {
+            setModalVisible(false);
+            console.error("Erro ao deletar imóvel:", error);
+            Alert.alert("Erro", "Não foi possível excluir o imóvel.");
+          }
+        }}
+      />
     </ScrollView>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.gray[200],
-  },
-  swiperContent: {
-    height: 340,
-    backgroundColor: colors.gray[100],
-  },
-  subTitle: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: colors.gray[600],
-  },
-  title: {
-    fontSize: 22,
-    fontWeight: "bold",
-  },
-});
-
 export default DetailScreen;
+

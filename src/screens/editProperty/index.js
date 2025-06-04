@@ -11,12 +11,14 @@ const EditPropertyScreen = ({ route, navigation }) => {
   const { atualizarImovel, formData, updateFormData } = useCardCreation();
   const [localData, setLocalData] = useState({});
 
-  console.log("ROUTE - EditPropertyScreen:", route); // ✅ coloque logo aqui
-
-  const formatCurrency = (value) => {
+  const formatCurrencyBR = (value) => {
     if (!value) return '';
-    return value.toString().replace(/\D/g, '')
-      .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+    const onlyDigits = value.replace(/\D/g, '');
+    const number = parseFloat(onlyDigits) / 100;
+    return number.toLocaleString('pt-BR', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
   };
 
   const formatArea = (value) => {
@@ -28,7 +30,8 @@ const EditPropertyScreen = ({ route, navigation }) => {
     if (imovel) {
       const formattedData = {
         ...imovel,
-        valorVenda: formatCurrency(imovel.valorVenda),
+        valorVenda: formatCurrencyBR(imovel.valorVenda.toString()),
+        iptu: formatCurrencyBR(imovel.iptu?.toString() || ''),
         area: formatArea(imovel.area),
       };
       setLocalData(formattedData);
@@ -46,13 +49,15 @@ const EditPropertyScreen = ({ route, navigation }) => {
 
   const handleSave = async () => {
     try {
+      const parseMoeda = (valor) => valor?.replace(/\D/g, '');
+
       const updatedImovel = {
         ...imovel,
         ...localData,
         imagens: formData.imagens || [],
-        valorVenda: localData.valorVenda?.replace(/\D/g, '') || imovel.valorVenda,
-        area: localData.area?.replace(/\D/g, '') || imovel.area,
-        iptu: localData.iptu?.replace(/\D/g, '') || imovel.iptu,
+        valorVenda: parseMoeda(localData.valorVenda),
+        iptu: parseMoeda(localData.iptu),
+        area: parseMoeda(localData.area),
       };
 
       await atualizarImovel(imovel.id, updatedImovel);
@@ -66,15 +71,16 @@ const EditPropertyScreen = ({ route, navigation }) => {
 
   const handleInputChange = (field, value) => {
     let formattedValue = value;
+
     if (field === 'valorVenda' || field === 'iptu') {
-      formattedValue = formatCurrency(value);
+      formattedValue = formatCurrencyBR(value);
     } else if (field === 'area') {
       formattedValue = formatArea(value);
     }
-    
-    setLocalData(prev => ({
+
+    setLocalData((prev) => ({
       ...prev,
-      [field]: formattedValue
+      [field]: formattedValue,
     }));
   };
 
@@ -126,17 +132,17 @@ const EditPropertyScreen = ({ route, navigation }) => {
           value={localData.tipoImovel}
           onChangeText={(value) => handleInputChange('tipoImovel', value)}
         />
-        
+
         <AddImages initialImages={imovel.imagens || []} />
-        
-        <RedButton 
-          title="Salvar Alterações" 
+
+        <RedButton
+          title="Salvar Alterações"
           onPress={handleSave}
-          style={{ marginTop: 20 }} 
+          style={{ marginTop: 20 }}
         />
       </View>
     </ScrollView>
   );
 };
 
-export default EditPropertyScreen; 
+export default EditPropertyScreen;

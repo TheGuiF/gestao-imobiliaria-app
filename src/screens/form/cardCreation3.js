@@ -24,7 +24,7 @@ const CardCreationScreen3 = ({ navigation }) => {
 
       Alert.alert("Sucesso", "O imóvel foi incluído ao catálogo com sucesso!");
       resetFormData();
-      navigation.navigate("Catálogo");
+      navigation.navigate("Catalog");
     } catch (error) {
       console.error("Erro ao salvar imóvel:", error);
       Alert.alert("Erro", "Não foi possível cadastrar o imóvel.");
