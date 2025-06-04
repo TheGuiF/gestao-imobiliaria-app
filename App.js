@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { View, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { CardCreationProvider } from './src/contexts/cardCreationContext';
-import { ClientesProvider } from './src/contexts/clientesContext';
 import { initDatabase } from './src/services/sqlite';
 import Routes from './src/routes';
 
@@ -45,9 +44,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <CardCreationProvider>
-        <ClientesProvider>
-          <Routes />
-        </ClientesProvider>
+        <Routes />
       </CardCreationProvider>
     </NavigationContainer>
   );

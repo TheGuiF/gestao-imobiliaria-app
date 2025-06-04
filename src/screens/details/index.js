@@ -4,23 +4,26 @@ import {
   Text,
   ScrollView,
   TouchableOpacity,
-  StyleSheet,
+  Alert,
 } from "react-native";
 
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Feather from "@expo/vector-icons/Feather";
+import * as DocumentPicker from 'expo-document-picker';
 
 import { Separator } from "../../components/separator";
 import SwiperComponent from "../../components/swiper";
 import InfoItem from "../../components/infoItem";
 import { colors } from "../../styles/colors";
 import { useCardCreation } from "../../contexts/cardCreationContext";
+import styles from "./styles";
 
 const DetailScreen = ({ route, navigation }) => {
   const { imovel: initialImovel } = route.params;
   const { deletarImovel, buscarImovelPorId } = useCardCreation();
   const [imovel, setImovel] = useState(initialImovel);
+  const [documents, setDocuments] = useState([]);
 
   useEffect(() => {
     const refreshImovel = async () => {
@@ -75,6 +78,26 @@ const DetailScreen = ({ route, navigation }) => {
       .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
   };
 
+  const handleAddDocument = async () => {
+    try {
+      const result = await DocumentPicker.getDocumentAsync({
+        type: 'application/pdf',
+        copyToCacheDirectory: true,
+      });
+
+      if (result.type === 'success') {
+        setDocuments(prev => [...prev, result]);
+        Alert.alert('Sucesso', 'Documento adicionado com sucesso!');
+      }
+    } catch (error) {
+      Alert.alert('Erro', 'Não foi possível adicionar o documento.');
+    }
+  };
+
+  const handleAddImage = async () => {
+    // Implement image upload functionality
+  };
+
   if (!imovel) {
     return null;
   }
@@ -87,11 +110,11 @@ const DetailScreen = ({ route, navigation }) => {
         />
       </View>
 
-      <View style={{ margin: "6%" }}>
-        <Text style={styles.subTitle}>{imovel.tipoImovel}</Text>
-        <Text style={styles.title}>R$ {formatCurrency(imovel.valorVenda)}</Text>
+      <View style={styles.content}>
+        <Text style={styles.title}>{imovel.tipoImovel}</Text>
+        <Text style={styles.price}>R$ {formatCurrency(imovel.valorVenda)}</Text>
 
-        <View style={{ gap: 10, marginTop: "6%" }}>
+        <View style={styles.infoContainer}>
           <InfoItem
             icon={<FontAwesome name="bed" size={24} color={colors.gray[600]} />}
             label="Dormitórios:"
@@ -125,55 +148,40 @@ const DetailScreen = ({ route, navigation }) => {
             value={imovel.situacao}
           />
         </View>
-      </View>
 
-      <Separator />
-
-      <View>
-        <Text
-          style={[
-            styles.title,
-            { color: colors.gray[600] },
-            { textAlign: "center" },
-            { marginVertical: "2%" },
-          ]}
-        >
-          Taxas
-        </Text>
-      </View>
-
-      <View style={{ alignItems: "center" }}>
-        <Separator width="80%" />
-        <View style={{ flexDirection: "row", gap: "40%" }}>
-          <Text style={{ fontWeight: "600" }}>IPTU Anual</Text>
-          <Text style={{ color: colors.red[100], fontWeight: "600" }}>
-            R$ {formatCurrency(imovel.iptu)}
-          </Text>
+        <View style={styles.taxContainer}>
+          <Text style={styles.taxTitle}>Taxas</Text>
+          <Separator />
+          <InfoItem
+            icon={<MaterialIcons name="attach-money" size={24} color={colors.gray[600]} />}
+            label="IPTU Anual:"
+            value={`R$ ${formatCurrency(imovel.iptu)}`}
+          />
         </View>
-        <Separator width="80%" />
+
+        <View style={styles.documentsContainer}>
+          <Text style={styles.documentsTitle}>Documentos do Imóvel</Text>
+          <Separator />
+          {documents.length > 0 ? (
+            documents.map((doc, index) => (
+              <Text key={index} style={styles.documentItem}>{doc.name}</Text>
+            ))
+          ) : (
+            <Text style={styles.noDocuments}>Nenhum documento adicionado.</Text>
+          )}
+          <TouchableOpacity style={styles.addButton} onPress={handleAddDocument}>
+            <MaterialIcons name="add" size={24} color="#fff" />
+            <Text style={styles.addButtonText}>Adicionar PDF</Text>
+          </TouchableOpacity>
+        </View>
+
+        <TouchableOpacity style={styles.addImageButton} onPress={handleAddImage}>
+          <MaterialIcons name="add" size={24} color="#fff" />
+          <Text style={styles.addButtonText}>Adicionar Imagem</Text>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.gray[200],
-  },
-  swiperContent: {
-    height: 340,
-    backgroundColor: colors.gray[100],
-  },
-  subTitle: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: colors.gray[600],
-  },
-  title: {
-    fontSize: 22,
-    fontWeight: "bold",
-  },
-});
 
 export default DetailScreen;
