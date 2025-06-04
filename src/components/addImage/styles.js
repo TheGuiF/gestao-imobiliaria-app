@@ -15,6 +15,14 @@ const styles = StyleSheet.create({
   pickerButtom: {
     flex: 1,
   },
+  imageScroll: {
+    marginVertical: 20,
+    paddingTop: 10,
+  },
+  imageContainer: {
+    marginRight: 10,
+    position: "relative",
+  },
   image: {
     width: 120,
     height: 120,
@@ -34,7 +42,8 @@ const styles = StyleSheet.create({
   },
   removeButtonText: {
     color: colors.gray[100],
-    fontWeight: 200,
+    fontWeight: "bold",
+    fontSize: 12,
   },
 });
 

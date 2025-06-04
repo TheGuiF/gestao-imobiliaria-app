@@ -1,8 +1,11 @@
 import React from "react";
 import { Alert, TouchableOpacity } from "react-native";
 import Feather from "@expo/vector-icons/Feather";
-import { deletarImovel } from "../../services/cardService"; 
+import { useCardCreation } from "../../contexts/cardCreationContext";
+
 export default function DeleteButton({ imovelId, onSuccess }) {
+  const { deletarImovel } = useCardCreation();
+
   const handleDelete = () => {
     Alert.alert("Confirmação", "Deseja deletar este imóvel?", [
       { text: "Cancelar", style: "cancel" },

@@ -8,10 +8,9 @@ import styles from "./styles";
 import { colors } from "../../styles/colors";
 
 import { useCardCreation } from "../../contexts/cardCreationContext";
-import { criarImovel } from "../../services/cardService";
 
 const CardCreationScreen3 = ({ navigation }) => {
-  const { formData, resetFormData } = useCardCreation();
+  const { formData, resetFormData, salvarImovel } = useCardCreation();
 
   const finalizarCadastro = async () => {
     try {
@@ -21,11 +20,11 @@ const CardCreationScreen3 = ({ navigation }) => {
         imagens: formData.imagens.map((img) => img.uri),
       };
 
-      await criarImovel(payload);
+      await salvarImovel(payload);
 
       Alert.alert("Sucesso", "O imóvel foi incluído ao catálogo com sucesso!");
       resetFormData();
-      navigation.navigate("Catalog");
+      navigation.navigate("Catálogo");
     } catch (error) {
       console.error("Erro ao salvar imóvel:", error);
       Alert.alert("Erro", "Não foi possível cadastrar o imóvel.");

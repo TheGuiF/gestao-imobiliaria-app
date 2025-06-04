@@ -18,13 +18,12 @@ export default function HomeScreen({ navigation }) {
           onPress={() => navigation.navigate("CardCreation1")}
         >
           <MaterialIcons name="home" size={32} color={colors.red[100]} />
-
           <Text style={styles.buttonText}>Adicionar Imóvel</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate("Catalog")}
+          onPress={() => navigation.navigate("Catálogo")}
         >
           <Feather name="folder" size={32} color={colors.red[100]} />
           <Text style={styles.buttonText}>Catalogo</Text>
