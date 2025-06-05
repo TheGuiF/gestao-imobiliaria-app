@@ -1,9 +1,10 @@
-import React from "react";
-import { View, ScrollView, Alert, KeyboardAvoidingView } from "react-native";
+import React, { useState } from "react";
+import { View, ScrollView, KeyboardAvoidingView } from "react-native";
 import Feather from "@expo/vector-icons/Feather";
 
 import RedButton from "../../components/redButton";
 import AddImages from "../../components/addImage";
+import CustomAlert from "../../components/customAlert";
 import styles from "./styles";
 import { colors } from "../../styles/colors";
 
@@ -11,6 +12,9 @@ import { useCardCreation } from "../../contexts/cardCreationContext";
 
 const CardCreationScreen3 = ({ navigation }) => {
   const { formData, resetFormData, salvarImovel } = useCardCreation();
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertTitle, setAlertTitle] = useState("");
+  const [alertMessage, setAlertMessage] = useState("");
 
   const finalizarCadastro = async () => {
     try {
@@ -22,12 +26,19 @@ const CardCreationScreen3 = ({ navigation }) => {
 
       await salvarImovel(payload);
 
-      Alert.alert("Sucesso", "O imóvel foi incluído ao catálogo com sucesso!");
+      setAlertTitle("Aviso");
+      setAlertMessage("O imóvel foi incluído ao catálogo com sucesso!");
+      setShowAlert(true);
+      
       resetFormData();
-      navigation.navigate("Catálogo");
+      setTimeout(() => {
+        navigation.navigate("Catálogo");
+      }, 1500);
     } catch (error) {
       console.error("Erro ao salvar imóvel:", error);
-      Alert.alert("Erro", "Não foi possível cadastrar o imóvel.");
+      setAlertTitle("Erro");
+      setAlertMessage("Não foi possível cadastrar o imóvel.");
+      setShowAlert(true);
     }
   };
 
@@ -45,6 +56,13 @@ const CardCreationScreen3 = ({ navigation }) => {
           <AddImages />
           <RedButton title="Finalizar" onPress={finalizarCadastro} />
         </View>
+
+        <CustomAlert
+          visible={showAlert}
+          title={alertTitle}
+          message={alertMessage}
+          onClose={() => setShowAlert(false)}
+        />
       </ScrollView>
     </KeyboardAvoidingView>
   );

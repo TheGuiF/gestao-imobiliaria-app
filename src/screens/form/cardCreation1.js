@@ -43,11 +43,9 @@ const CardCreationScreen1 = ({ navigation }) => {
           />
 
           <InputField
-            label="Tamanho da área construída:"
+            label="Tamanho da área construída (m²):"
             value={formData.area}
-            onChangeText={(text) =>
-              updateFormData({ area: text.replace(/[^0-9]/g, "") })
-            }
+            onChangeText={(text) => updateFormData({ area: text.replace(/[^0-9]/g, "") })}
             keyboardType="numeric"
             hasError={submitted && !formData.area}
           />

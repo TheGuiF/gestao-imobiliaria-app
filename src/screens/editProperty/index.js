@@ -9,28 +9,18 @@ import styles from './styles';
 
 const EditPropertyScreen = ({ route, navigation }) => {
   const imovel = route.params?.imovel;
-  const { atualizarImovel, formData, updateFormData } = useCardCreation();
+  const { atualizarImovel, formData, updateFormData, formatCurrency, formatArea } = useCardCreation();
   const [localData, setLocalData] = useState({});
   const [showAlert, setShowAlert] = useState(false);
   const [alertTitle, setAlertTitle] = useState('');
   const [alertMessage, setAlertMessage] = useState('');
-
-  const formatCurrency = (value) => {
-    if (!value) return '';
-    return value.toString().replace(/\D/g, '')
-      .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
-  };
-
-  const formatArea = (value) => {
-    if (!value) return '';
-    return value.toString().replace(/\D/g, '');
-  };
 
   useEffect(() => {
     if (imovel) {
       const formattedData = {
         ...imovel,
         valorVenda: formatCurrency(imovel.valorVenda),
+        iptu: formatCurrency(imovel.iptu),
         area: formatArea(imovel.area),
       };
       setLocalData(formattedData);
@@ -53,8 +43,8 @@ const EditPropertyScreen = ({ route, navigation }) => {
         ...localData,
         imagens: formData.imagens || [],
         valorVenda: localData.valorVenda?.replace(/\D/g, '') || imovel.valorVenda,
-        area: localData.area?.replace(/\D/g, '') || imovel.area,
         iptu: localData.iptu?.replace(/\D/g, '') || imovel.iptu,
+        area: localData.area?.replace(/\D/g, '') || imovel.area,
       };
 
       await atualizarImovel(imovel.id, updatedImovel);
@@ -75,15 +65,19 @@ const EditPropertyScreen = ({ route, navigation }) => {
   const handleInputChange = (field, value) => {
     let formattedValue = value;
     if (field === 'valorVenda' || field === 'iptu') {
-      formattedValue = formatCurrency(value);
+      formattedValue = value.replace(/[^0-9]/g, '');
     } else if (field === 'area') {
-      formattedValue = formatArea(value);
+      formattedValue = value.replace(/[^0-9]/g, '');
     }
     
     setLocalData(prev => ({
       ...prev,
       [field]: formattedValue
     }));
+
+    updateFormData({
+      [field]: formattedValue
+    });
   };
 
   return (

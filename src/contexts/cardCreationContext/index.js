@@ -41,16 +41,59 @@ export const CardCreationProvider = ({ children }) => {
     }
   };
 
+  // Função para formatar valores monetários (R$)
+  const formatCurrency = (value) => {
+    if (!value) return '';
+    const numericValue = value.toString().replace(/\D/g, '');
+    if (numericValue.length <= 2) return numericValue;
+    
+    const integerPart = numericValue.slice(0, -2);
+    const decimalPart = numericValue.slice(-2);
+    
+    const formattedInteger = integerPart.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+    return `${formattedInteger},${decimalPart}`;
+  };
+
+  // Função para formatar área (m²)
+  const formatArea = (value) => {
+    if (!value) return '';
+    const numericValue = value.toString().replace(/\D/g, '');
+    if (numericValue.length <= 2) return numericValue;
+    
+    const integerPart = numericValue.slice(0, -2);
+    const decimalPart = numericValue.slice(-2);
+    
+    return `${integerPart},${decimalPart}`;
+  };
+
   const updateFormData = (newData) => {
     setFormData((prev) => {
-      if (newData.imagens !== undefined) {
-        return {
-          ...prev,
-          ...newData,
-          imagens: Array.isArray(newData.imagens) ? newData.imagens : [],
-        };
+      const updatedData = { ...prev };
+      
+      // Aplica formatação específica para cada campo
+      if (newData.valorVenda !== undefined) {
+        updatedData.valorVenda = formatCurrency(newData.valorVenda);
       }
-      return { ...prev, ...newData };
+      if (newData.iptu !== undefined) {
+        updatedData.iptu = formatCurrency(newData.iptu);
+      }
+      if (newData.area !== undefined) {
+        updatedData.area = formatArea(newData.area);
+      }
+      
+      // Atualiza outros campos normalmente
+      Object.keys(newData).forEach(key => {
+        if (key !== 'valorVenda' && key !== 'iptu' && key !== 'area') {
+          updatedData[key] = newData[key];
+        }
+      });
+
+      // Trata o array de imagens separadamente
+      if (newData.imagens !== undefined) {
+        updatedData.imagens = Array.isArray(newData.imagens) ? newData.imagens : [];
+      }
+      
+      return updatedData;
     });
   };
 
@@ -66,12 +109,6 @@ export const CardCreationProvider = ({ children }) => {
       tipoImovel: "",
       imagens: [],
     });
-  };
-
-  const formatCurrency = (value) => {
-    if (!value) return '';
-    const numericValue = value.toString().replace(/\D/g, '');
-    return numericValue.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
   };
 
   const salvarImovel = async () => {
@@ -151,7 +188,9 @@ export const CardCreationProvider = ({ children }) => {
         salvarImovel,
         buscarImovel,
         atualizarImovel,
-        deletarImovel
+        deletarImovel,
+        formatCurrency,
+        formatArea
       }}
     >
       {children}

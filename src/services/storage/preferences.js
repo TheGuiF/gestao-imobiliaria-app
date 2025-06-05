@@ -2,7 +2,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const KEYS = {
   THEME: '@imobiliaria:theme',
-  LAST_SYNC: '@imobiliaria:lastSync',
   USER_PREFERENCES: '@imobiliaria:userPreferences',
   FORM_DRAFT: '@imobiliaria:formDraft',
 };
@@ -77,24 +76,5 @@ export const clearFormDraft = async (formType) => {
   } catch (error) {
     console.error('Erro ao limpar rascunho:', error);
     return false;
-  }
-};
-
-export const updateLastSync = async () => {
-  try {
-    await AsyncStorage.setItem(KEYS.LAST_SYNC, new Date().toISOString());
-    return true;
-  } catch (error) {
-    console.error('Erro ao atualizar última sincronização:', error);
-    return false;
-  }
-};
-
-export const getLastSync = async () => {
-  try {
-    return await AsyncStorage.getItem(KEYS.LAST_SYNC);
-  } catch (error) {
-    console.error('Erro ao recuperar última sincronização:', error);
-    return null;
   }
 }; 

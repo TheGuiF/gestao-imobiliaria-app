@@ -39,7 +39,7 @@ const CardCreationScreen2 = ({ navigation }) => {
         </View>
         <View style={styles.card}>
           <InputField
-            label="Valor da Venda:"
+            label="Valor da Venda (R$):"
             value={formData.valorVenda}
             onChangeText={(text) =>
               updateFormData({ valorVenda: text.replace(/[^0-9]/g, "") })
@@ -54,7 +54,7 @@ const CardCreationScreen2 = ({ navigation }) => {
             hasError={submitted && !formData.situacao}
           />
           <InputField
-            label="Taxa de IPTU anual:"
+            label="Taxa de IPTU anual (R$):"
             value={formData.iptu}
             onChangeText={(text) =>
               updateFormData({ iptu: text.replace(/[^0-9]/g, "") })

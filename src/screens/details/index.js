@@ -16,7 +16,6 @@ import Feather from "@expo/vector-icons/Feather";
 import * as DocumentPicker from 'expo-document-picker';
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
-import * as IntentLauncher from 'expo-intent-launcher';
 
 import { Separator } from "../../components/separator";
 import SwiperComponent from "../../components/swiper";
@@ -228,33 +227,22 @@ const DetailScreen = ({ route, navigation }) => {
 
   const handleOpenDocument = async (uri) => {
     try {
-      if (Platform.OS === 'android') {
-        console.log('Tentando abrir documento:', uri);
-        
-        // Check if file exists
-        const fileInfo = await FileSystem.getInfoAsync(uri);
-        if (!fileInfo.exists) {
-          throw new Error('Arquivo não encontrado');
-        }
+      // Check if file exists
+      const fileInfo = await FileSystem.getInfoAsync(uri);
+      if (!fileInfo.exists) {
+        throw new Error('Arquivo não encontrado');
+      }
 
-        // Get content URI for the file
-        const contentUri = await FileSystem.getContentUriAsync(uri);
-        console.log('Content URI gerado:', contentUri);
+      // Get content URI for the file
+      const contentUri = await FileSystem.getContentUriAsync(uri);
+      console.log('Content URI gerado:', contentUri);
 
-        // Use IntentLauncher to open the PDF with the content URI
-        await IntentLauncher.startActivityAsync('android.intent.action.VIEW', {
-          data: contentUri,
-          flags: 1,
-          type: 'application/pdf'
-        });
+      // Try to open the file with the system default app
+      const supported = await Linking.canOpenURL(contentUri);
+      if (supported) {
+        await Linking.openURL(contentUri);
       } else {
-        // For iOS
-        const supported = await Linking.canOpenURL(uri);
-        if (supported) {
-          await Linking.openURL(uri);
-        } else {
-          Alert.alert('Erro', 'Não foi possível abrir o documento.');
-        }
+        Alert.alert('Erro', 'Não foi possível abrir o documento.');
       }
     } catch (error) {
       console.error('Erro ao abrir documento:', error);

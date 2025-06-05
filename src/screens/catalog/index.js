@@ -86,15 +86,11 @@ const CatalogScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <SearchBar search={search} setSearch={setSearch} />
-        <TouchableOpacity
-          style={styles.filterButton}
-          onPress={() => setShowFilters(true)}
-        >
-          <MaterialIcons name="filter-list" size={24} color={colors.red[100]} />
-        </TouchableOpacity>
-      </View>
+      <SearchBar 
+        search={search} 
+        setSearch={setSearch} 
+        onFilterPress={() => setShowFilters(true)}
+      />
 
       {activeFilters && (
         <TouchableOpacity
@@ -119,7 +115,7 @@ const CatalogScreen = ({ navigation }) => {
           Nenhum imóvel encontrado com os filtros selecionados.
         </Text>
       ) : (
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView showsVerticalScrollIndicator={false} style={styles.scrollView}>
           {imoveisFiltrados.map((item) => (
             <Cards
               key={item.id}
@@ -146,19 +142,12 @@ const CatalogScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: colors.gray[200],
+    padding: 20,
     paddingTop: 50,
-    paddingHorizontal: 14,
   },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 10,
-  },
-  filterButton: {
-    padding: 10,
-    backgroundColor: colors.red[50],
-    borderRadius: 8,
+  scrollView: {
+    marginTop: 10,
   },
   clearFiltersButton: {
     flexDirection: "row",
