@@ -30,24 +30,11 @@ export const initDatabase = () => {
           area TEXT,
           situacao TEXT,
           iptu TEXT,
-          imagens TEXT
+          imagens TEXT,
+          documentos TEXT
         );
       `);
       console.log('Tabela imoveis criada com sucesso');
-
-      // Criar tabela de clientes
-      await database.execAsync(`
-        CREATE TABLE IF NOT EXISTS clientes (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          nome TEXT,
-          email TEXT,
-          telefone TEXT,
-          cidade TEXT,
-          interesse TEXT,
-          observacoes TEXT
-        );
-      `);
-      console.log('Tabela clientes criada com sucesso');
 
       resolve();
     } catch (error) {

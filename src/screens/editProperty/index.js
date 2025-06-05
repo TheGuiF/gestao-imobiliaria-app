@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Alert } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import { useCardCreation } from '../../contexts/cardCreationContext';
 import InputField from '../../components/input';
 import RedButton from '../../components/redButton';
 import AddImages from '../../components/addImage';
+import CustomAlert from '../../components/customAlert';
 import styles from './styles';
 
 const EditPropertyScreen = ({ route, navigation }) => {
   const imovel = route.params?.imovel;
   const { atualizarImovel, formData, updateFormData } = useCardCreation();
   const [localData, setLocalData] = useState({});
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertTitle, setAlertTitle] = useState('');
+  const [alertMessage, setAlertMessage] = useState('');
 
   const formatCurrency = (value) => {
     if (!value) return '';
@@ -54,11 +58,17 @@ const EditPropertyScreen = ({ route, navigation }) => {
       };
 
       await atualizarImovel(imovel.id, updatedImovel);
-      Alert.alert('Sucesso', 'Imóvel atualizado com sucesso!');
-      navigation.goBack();
+      setAlertTitle('Aviso');
+      setAlertMessage('Imóvel atualizado com sucesso!');
+      setShowAlert(true);
+      setTimeout(() => {
+        navigation.goBack();
+      }, 1500);
     } catch (error) {
       console.error('Erro ao atualizar imóvel:', error);
-      Alert.alert('Erro', 'Não foi possível atualizar o imóvel.');
+      setAlertTitle('Erro');
+      setAlertMessage('Não foi possível atualizar o imóvel.');
+      setShowAlert(true);
     }
   };
 
@@ -133,6 +143,13 @@ const EditPropertyScreen = ({ route, navigation }) => {
           style={{ marginTop: 20 }} 
         />
       </View>
+
+      <CustomAlert
+        visible={showAlert}
+        title={alertTitle}
+        message={alertMessage}
+        onClose={() => setShowAlert(false)}
+      />
     </ScrollView>
   );
 };

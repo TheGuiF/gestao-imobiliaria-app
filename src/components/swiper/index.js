@@ -8,6 +8,7 @@ export default function SwiperComponent({ images = [] }) {
 
   const renderImage = (source, index) => {
     const imageSource = typeof source === 'string' ? { uri: source } : source;
+    const isDefaultImage = !hasImages || source === defaultImage;
     
     return (
       <View key={index} style={styles.slide}>

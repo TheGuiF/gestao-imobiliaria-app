@@ -32,7 +32,7 @@ export default function AddImages({ initialImages }) {
 
       const result = await ImagePicker.launchImageLibraryAsync({
         allowsMultipleSelection: true,
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        mediaTypes: "images",
         quality: 1,
         base64: false,
       });

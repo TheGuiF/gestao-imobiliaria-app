@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { Alert, View, ScrollView, KeyboardAvoidingView } from "react-native";
+import { View, ScrollView, KeyboardAvoidingView } from "react-native";
 
 import Feather from "@expo/vector-icons/Feather";
 
 import InputField from "../../components/input";
 import RedButton from "../../components/redButton";
+import CustomAlert from "../../components/customAlert";
 import styles from "./styles";
 import { colors } from "../../styles/colors";
 import { useCardCreation } from "../../contexts/cardCreationContext";
@@ -12,6 +13,7 @@ import { useCardCreation } from "../../contexts/cardCreationContext";
 const CardCreationScreen2 = ({ navigation }) => {
   const { formData, updateFormData } = useCardCreation();
   const [submitted, setSubmitted] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
 
   const handleContinuar = () => {
     setSubmitted(true);
@@ -19,10 +21,7 @@ const CardCreationScreen2 = ({ navigation }) => {
     const { valorVenda, situacao, iptu, tipoImovel } = formData;
 
     if (!valorVenda || !situacao || !iptu || !tipoImovel) {
-      Alert.alert(
-        "Campos obrigatórios",
-        "Por favor, preencha todos os campos."
-      );
+      setShowAlert(true);
       return;
     }
 
@@ -72,6 +71,13 @@ const CardCreationScreen2 = ({ navigation }) => {
 
           <RedButton title="Continuar" onPress={handleContinuar} />
         </View>
+
+        <CustomAlert
+          visible={showAlert}
+          title="Campos Obrigatórios"
+          message="Por favor, preencha todos os campos."
+          onClose={() => setShowAlert(false)}
+        />
       </ScrollView>
     </KeyboardAvoidingView>
   );
