@@ -1,8 +1,4 @@
-//import React from 'react';
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-//import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-//import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-//import { colors } from '../styles/colors';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import HomeScreen from "../screens/home/home";
 import CatalogScreen from "../screens/catalog";

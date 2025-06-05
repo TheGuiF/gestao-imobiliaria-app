@@ -15,9 +15,9 @@ export default function Cards(props) {
 
   return (
     <TouchableOpacity style={styles.container} onPress={props.onClick}>
-      <Image                    //Criar funções da qual pega os dados colocados
+      <Image                    
         source={typeof props.img === 'string' ? { uri: props.img } : props.img}
-        style={styles.cardImg}  //de para criar os Cards e salvar os mesmos
+        style={styles.cardImg}  
         defaultSource={defaultImage}
       />
       <View style={{ maxWidth: "65%", rowGap: 20 }}>
@@ -35,6 +35,6 @@ export default function Cards(props) {
           </Text>
         </View>
       </View>
-    </TouchableOpacity> // {props.status}
+    </TouchableOpacity> 
   );
 }

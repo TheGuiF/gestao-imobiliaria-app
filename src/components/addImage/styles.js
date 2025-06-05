@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   },
   removeButtonText: {
     color: colors.gray[100],
-    fontWeight: "bold",
+    fontWeight: "600",
     fontSize: 12,
   },
 });

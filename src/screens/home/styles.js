@@ -10,6 +10,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: colors.gray[200],
   },
+  topContent: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 20,
+  },
   quote: {
     fontSize: 24,
     fontWeight: 800,

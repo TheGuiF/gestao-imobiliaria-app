@@ -1,5 +1,4 @@
 import { View, Text, TouchableOpacity, Image } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
 import Feather from "@expo/vector-icons/Feather";
 
 import styles from "./styles";
@@ -15,7 +14,6 @@ export default function HomeScreen({ navigation }) {
           Gerencie seus imóveis com mais agilidade e precisão
         </Text>
       </View>
-
       <View style={styles.area}>
         <TouchableOpacity
           style={styles.button}
@@ -33,6 +31,6 @@ export default function HomeScreen({ navigation }) {
         </TouchableOpacity>
       </View>
     </View>
-  );
+  )
 }
 

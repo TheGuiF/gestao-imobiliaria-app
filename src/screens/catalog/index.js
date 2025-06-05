@@ -7,10 +7,10 @@ import {
   ActivityIndicator,
 } from "react-native";
 
+import { useCardCreation } from "../../contexts/cardCreationContext";
 import SearchBar from "../../components/searchBar";
 import Cards from "../../components/cards";
 import { colors } from "../../styles/colors";
-import { useCardCreation } from "../../contexts/cardCreationContext";
 
 const CatalogScreen = ({ navigation }) => {
   const { imoveis, loading: carregando } = useCardCreation();

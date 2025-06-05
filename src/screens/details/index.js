@@ -1,24 +1,18 @@
 import React, { useLayoutEffect, useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-  Alert,
-} from "react-native";
+import { View, Text, ScrollView, TouchableOpacity, Alert } from "react-native";
 import { useRoute } from "@react-navigation/native";
 
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Feather from "@expo/vector-icons/Feather";
+import * as DocumentPicker from "expo-document-picker";
 
+import { useCardCreation } from "../../contexts/cardCreationContext";
 import { Separator } from "../../components/separator";
 import SwiperComponent from "../../components/swiper";
 import InfoItem from "../../components/infoItem";
 import DeleteButton from "../../components/deleteButton";
 import { colors } from "../../styles/colors";
-import { useCardCreation } from "../../contexts/cardCreationContext";
 import styles from "./styles";
 
 const DetailScreen = ({ navigation }) => {
@@ -28,6 +22,7 @@ const DetailScreen = ({ navigation }) => {
   const { deletarImovel, buscarImovelPorId } = useCardCreation();
   const [imovel, setImovel] = useState(initialImovel);
   const [modalVisible, setModalVisible] = useState(false);
+  const [documents, setDocuments] = useState([]);
 
   if (!initialImovel) {
     return (
@@ -77,6 +72,26 @@ const DetailScreen = ({ navigation }) => {
     });
   };
 
+  const handleAddDocument = async () => {
+    try {
+      const result = await DocumentPicker.getDocumentAsync({
+        type: "application/pdf",
+        copyToCacheDirectory: true,
+      });
+
+      if (result.type === "success") {
+        setDocuments((prev) => [...prev, result]);
+        Alert.alert("Sucesso", "Documento adicionado com sucesso!");
+      }
+    } catch (error) {
+      Alert.alert("Erro", "Não foi possível adicionar o documento.");
+    }
+  };
+
+  const handleAddImage = async () => {
+    Alert.alert("Imagem", "Funcionalidade ainda não implementada.");
+  };
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.swiperContent}>
@@ -85,11 +100,11 @@ const DetailScreen = ({ navigation }) => {
         />
       </View>
 
-      <View style={{ margin: "6%" }}>
-        <Text style={styles.subTitle}>{imovel.tipoImovel}</Text>
-        <Text style={styles.title}>R$ {formatCurrency(imovel.valorVenda)}</Text>
+      <View style={styles.content}>
+        <Text style={styles.title}>{imovel.tipoImovel}</Text>
+        <Text style={styles.price}>R$ {formatCurrency(imovel.valorVenda)}</Text>
 
-        <View style={{ gap: 10, marginTop: "6%" }}>
+        <View style={styles.infoContainer}>
           <InfoItem
             icon={<FontAwesome name="bed" size={24} color={colors.gray[600]} />}
             label="Dormitórios:"
@@ -127,20 +142,21 @@ const DetailScreen = ({ navigation }) => {
 
       <Separator />
 
-      <View>
-        <Text style={[styles.title, styles.taxTitle]}>Taxas</Text>
-      </View>
+      <View style={styles.taxContainer}>
+        <Text style={styles.taxTitle}>Taxas</Text>
 
-      <View style={{ alignItems: "center" }}>
         <Separator width="80%" />
-        <View style={styles.taxRow}>
-          <Text style={styles.taxLabel}>IPTU Anual</Text>
-          <Text style={styles.taxValue}>R$ {formatCurrency(imovel.iptu)}</Text>
+        <View style={styles.taxContentInfo}>
+          <Text style={styles.taxInfo}>IPTU Anual</Text>
+          <Text style={[styles.taxInfo, { color: colors.red[200] }]}>
+            R$ {formatCurrency(imovel.iptu)}
+          </Text>
         </View>
         <Separator width="80%" />
       </View>
 
-      {/* Modal de confirmação */}
+      <Separator />
+
       <DeleteButton
         visible={modalVisible}
         onCancel={() => setModalVisible(false)}
@@ -161,4 +177,3 @@ const DetailScreen = ({ navigation }) => {
 };
 
 export default DetailScreen;
-
