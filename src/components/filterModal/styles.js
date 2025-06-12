@@ -1,28 +1,28 @@
-import { StyleSheet } from 'react-native';
-import { colors } from '../../styles/colors';
+import { StyleSheet } from "react-native";
+import { colors } from "../../styles/colors";
 
 export default StyleSheet.create({
   modalContainer: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'flex-end',
+    backgroundColor: colors.overlay[100],
+    justifyContent: "flex-end",
   },
   modalContent: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.gray[100],
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 20,
-    maxHeight: '80%',
+    maxHeight: "80%",
   },
   modalHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginBottom: 20,
   },
   modalTitle: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "600",
     color: colors.gray[600],
   },
   filterSection: {
@@ -30,19 +30,19 @@ export default StyleSheet.create({
   },
   filterTitle: {
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: "600",
     color: colors.gray[600],
     marginBottom: 10,
   },
   priceInputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   priceInput: {
     flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     borderWidth: 1,
     borderColor: colors.gray[300],
     borderRadius: 8,
@@ -59,7 +59,7 @@ export default StyleSheet.create({
   },
   input: {
     flex: 1,
-    height: '100%',
+    height: "100%",
     color: colors.gray[600],
   },
   fullWidthInput: {
@@ -73,12 +73,12 @@ export default StyleSheet.create({
     backgroundColor: colors.red[100],
     padding: 15,
     borderRadius: 8,
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 10,
   },
   applyButtonText: {
-    color: '#fff',
+    color: colors.gray[100],
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: "600",
   },
-}); 
+});

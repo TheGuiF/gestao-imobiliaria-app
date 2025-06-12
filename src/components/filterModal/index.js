@@ -1,24 +1,36 @@
-import React, { useState } from 'react';
-import { View, Modal, Text, TouchableOpacity, TextInput, ScrollView } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
-import { colors } from '../../styles/colors';
-import styles from './styles';
+//modal de filtro da barra de pesquisa
+import React, { useState } from "react";
+import {
+  View,
+  Modal,
+  Text,
+  TouchableOpacity,
+  TextInput,
+  ScrollView,
+} from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
+import { colors } from "../../styles/colors";
+import styles from "./styles";
 
 const FilterModal = ({ visible, onClose, onApplyFilters }) => {
-  const [priceRange, setPriceRange] = useState({ min: '', max: '' });
-  const [bedrooms, setBedrooms] = useState('');
-  const [location, setLocation] = useState('');
-  const [parkingSpaces, setParkingSpaces] = useState('');
+  const [priceRange, setPriceRange] = useState({ min: "", max: "" });
+  const [bedrooms, setBedrooms] = useState("");
+  const [location, setLocation] = useState("");
+  const [parkingSpaces, setParkingSpaces] = useState("");
 
   const handleApplyFilters = () => {
     const filters = {
       priceRange: {
-        min: priceRange.min ? parseFloat(priceRange.min.replace(/\D/g, '')) : null,
-        max: priceRange.max ? parseFloat(priceRange.max.replace(/\D/g, '')) : null
+        min: priceRange.min
+          ? parseFloat(priceRange.min.replace(/\D/g, ""))
+          : null,
+        max: priceRange.max
+          ? parseFloat(priceRange.max.replace(/\D/g, ""))
+          : null,
       },
       bedrooms: bedrooms ? parseInt(bedrooms) : null,
       location: location || null,
-      parkingSpaces: parkingSpaces ? parseInt(parkingSpaces) : null
+      parkingSpaces: parkingSpaces ? parseInt(parkingSpaces) : null,
     };
 
     onApplyFilters(filters);
@@ -26,16 +38,17 @@ const FilterModal = ({ visible, onClose, onApplyFilters }) => {
   };
 
   const formatCurrency = (value) => {
-    if (!value) return '';
-    return value.toString()
-      .replace(/\D/g, '')
-      .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+    if (!value) return "";
+    return value
+      .toString()
+      .replace(/\D/g, "")
+      .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
   };
 
   const handlePriceChange = (field, value) => {
-    setPriceRange(prev => ({
+    setPriceRange((prev) => ({
       ...prev,
-      [field]: formatCurrency(value)
+      [field]: formatCurrency(value),
     }));
   };
 
@@ -66,7 +79,7 @@ const FilterModal = ({ visible, onClose, onApplyFilters }) => {
                     placeholder="Mínimo"
                     keyboardType="numeric"
                     value={priceRange.min}
-                    onChangeText={(value) => handlePriceChange('min', value)}
+                    onChangeText={(value) => handlePriceChange("min", value)}
                   />
                 </View>
                 <Text style={styles.separator}>até</Text>
@@ -77,7 +90,7 @@ const FilterModal = ({ visible, onClose, onApplyFilters }) => {
                     placeholder="Máximo"
                     keyboardType="numeric"
                     value={priceRange.max}
-                    onChangeText={(value) => handlePriceChange('max', value)}
+                    onChangeText={(value) => handlePriceChange("max", value)}
                   />
                 </View>
               </View>
@@ -128,4 +141,4 @@ const FilterModal = ({ visible, onClose, onApplyFilters }) => {
   );
 };
 
-export default FilterModal; 
+export default FilterModal;

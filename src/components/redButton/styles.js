@@ -9,6 +9,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     alignItems: "center",
     marginTop: 10,
+    width: "100%",
   },
   text: {
     color: colors.gray[100],

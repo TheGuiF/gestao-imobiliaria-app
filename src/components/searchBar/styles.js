@@ -5,19 +5,18 @@ export default StyleSheet.create({
   container: {
     flexDirection: "row",
     alignItems: "center",
+    backgroundColor: colors.gray[100],
+    borderRadius: 25,
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    margin: "4%",
+    marginTop: "0%",
+    elevation: 2,
+    gap: 30,
   },
   filterButton: {
-    marginRight: 12,
     padding: 8,
-  },
-  searchContainer: {
-    flex: 1,
-    flexDirection: "row",
-    backgroundColor: colors.red[50],
-    alignItems: "center",
-    paddingHorizontal: 15,
-    borderRadius: 25,
-    height: 50,
+    paddingRight: 0,
   },
   input: {
     flex: 1,

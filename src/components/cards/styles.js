@@ -21,12 +21,12 @@ const styles = StyleSheet.create({
   cardText: {
     fontSize: 16,
     color: colors.red[200],
-    fontWeight: "bold",
+    fontWeight: "600",
     verticalAlign: "top",
   },
   cardTitle: {
     fontSize: 18,
-    fontWeight: 500,
+    fontWeight: "600",
   },
 });
 

@@ -4,7 +4,6 @@ import { colors } from "../../styles/colors";
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    margin: 10,
     justifyContent: "center",
   },
   buttomWrapper: {
@@ -42,7 +41,7 @@ const styles = StyleSheet.create({
   },
   removeButtonText: {
     color: colors.gray[100],
-    fontWeight: "bold",
+    fontWeight: "600",
     fontSize: 12,
   },
 });

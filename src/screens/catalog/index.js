@@ -1,19 +1,20 @@
+//tela de catalogo, tem todos os cards que dao pro details
 import React, { useEffect, useState } from "react";
 import {
   ScrollView,
   View,
-  StyleSheet,
   Text,
   ActivityIndicator,
   TouchableOpacity,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
+import { useCardCreation } from "../../contexts/cardCreationContext";
+import Cards from "../../components/cards";
 import SearchBar from "../../components/searchBar";
 import FilterModal from "../../components/filterModal";
-import Cards from "../../components/cards";
 import { colors } from "../../styles/colors";
-import { useCardCreation } from "../../contexts/cardCreationContext";
+import styles from "./styles";
 
 const CatalogScreen = ({ navigation }) => {
   const { imoveis, loading: carregando } = useCardCreation();
@@ -23,6 +24,7 @@ const CatalogScreen = ({ navigation }) => {
   const [activeFilters, setActiveFilters] = useState(null);
   const [imoveisFiltrados, setImoveisFiltrados] = useState([]);
 
+  // atualiza a lista de imoveis filtrados sempre que a busca ou os filtros mudam
   useEffect(() => {
     if (!search.trim() && !activeFilters) {
       setImoveisFiltrados(imoveis);
@@ -31,7 +33,7 @@ const CatalogScreen = ({ navigation }) => {
 
     let filtrados = [...imoveis];
 
-    // Aplicar filtro de busca por texto
+    // aplica filtro de busca por texto
     if (search.trim()) {
       const termo = search.toLowerCase();
       filtrados = filtrados.filter((item) => {
@@ -42,16 +44,20 @@ const CatalogScreen = ({ navigation }) => {
       });
     }
 
-    // Aplicar filtros avançados
+    // aplica filtros avançados
     if (activeFilters) {
       if (activeFilters.priceRange.min !== null) {
         filtrados = filtrados.filter(
-          (item) => parseFloat(item.valorVenda.replace(/\D/g, '')) >= activeFilters.priceRange.min
+          (item) =>
+            parseFloat(item.valorVenda.replace(/\D/g, "")) >=
+            activeFilters.priceRange.min
         );
       }
       if (activeFilters.priceRange.max !== null) {
         filtrados = filtrados.filter(
-          (item) => parseFloat(item.valorVenda.replace(/\D/g, '')) <= activeFilters.priceRange.max
+          (item) =>
+            parseFloat(item.valorVenda.replace(/\D/g, "")) <=
+            activeFilters.priceRange.max
         );
       }
       if (activeFilters.bedrooms !== null) {
@@ -61,8 +67,8 @@ const CatalogScreen = ({ navigation }) => {
       }
       if (activeFilters.location) {
         const locationTerm = activeFilters.location.toLowerCase();
-        filtrados = filtrados.filter(
-          (item) => item.endereco?.toLowerCase().includes(locationTerm)
+        filtrados = filtrados.filter((item) =>
+          item.endereco?.toLowerCase().includes(locationTerm)
         );
       }
       if (activeFilters.parkingSpaces !== null) {
@@ -75,10 +81,12 @@ const CatalogScreen = ({ navigation }) => {
     setImoveisFiltrados(filtrados);
   }, [search, imoveis, activeFilters]);
 
+  // aplica os filtros escolhidos pelo usuário
   const handleApplyFilters = (filters) => {
     setActiveFilters(filters);
   };
 
+  // limpa os filtros selecionados
   const handleClearFilters = () => {
     setActiveFilters(null);
     setSearch("");
@@ -86,9 +94,9 @@ const CatalogScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <SearchBar 
-        search={search} 
-        setSearch={setSearch} 
+      <SearchBar
+        search={search}
+        setSearch={setSearch}
         onFilterPress={() => setShowFilters(true)}
       />
 
@@ -98,7 +106,7 @@ const CatalogScreen = ({ navigation }) => {
           onPress={handleClearFilters}
         >
           <Text style={styles.clearFiltersText}>Limpar Filtros</Text>
-          <MaterialIcons name="close" size={20} color={colors.red[100]} />
+          <MaterialIcons name="close" size={20} color={colors.red[300]} />
         </TouchableOpacity>
       )}
 
@@ -115,7 +123,10 @@ const CatalogScreen = ({ navigation }) => {
           Nenhum imóvel encontrado com os filtros selecionados.
         </Text>
       ) : (
-        <ScrollView showsVerticalScrollIndicator={false} style={styles.scrollView}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={styles.scrollView}
+        >
           {imoveisFiltrados.map((item) => (
             <Cards
               key={item.id}
@@ -138,43 +149,5 @@ const CatalogScreen = ({ navigation }) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.gray[200],
-    padding: 20,
-    paddingTop: 50,
-  },
-  scrollView: {
-    marginTop: 10,
-  },
-  clearFiltersButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: colors.red[50],
-    padding: 8,
-    borderRadius: 8,
-    marginTop: 10,
-  },
-  clearFiltersText: {
-    color: colors.red[100],
-    marginRight: 5,
-    fontSize: 14,
-    fontWeight: "500",
-  },
-  errorText: {
-    color: colors.red[100],
-    textAlign: "center",
-    marginTop: 30,
-  },
-  noResultsText: {
-    color: colors.gray[600],
-    textAlign: "center",
-    marginTop: 30,
-    fontSize: 16,
-  },
-});
 
 export default CatalogScreen;

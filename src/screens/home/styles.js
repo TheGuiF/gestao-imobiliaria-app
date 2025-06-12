@@ -1,4 +1,3 @@
-// styles.js (arquivo de estilo)
 import { StyleSheet } from "react-native";
 import { colors } from "../../styles/colors";
 
@@ -9,27 +8,26 @@ const styles = StyleSheet.create({
   },
   topContent: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     paddingHorizontal: 20,
   },
   quote: {
-    fontSize: 24,
-    fontWeight: "600",
-    color: colors.red[100],
+    fontSize: 25,
+    fontWeight: "800",
+    color: colors.red[300],
     textAlign: "center",
-    position: 'absolute',
-    top: '15%',
-    zIndex: 1,
+    position: "absolute",
+    top: "15%",
     paddingHorizontal: 20,
   },
   logo: {
-    width: 420,
-    height: 420,
-    marginTop: -40,
+    width: 480,
+    height: 480,
+    marginTop: -150,
   },
   buttonContainer: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 40,
     left: 0,
     right: 0,
@@ -37,18 +35,20 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   button: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.gray[100],
+    borderColor: colors.gray[500],
+    borderWidth: 1,
     borderRadius: 8,
     elevation: 2,
     height: 100,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     gap: 4,
   },
   buttonText: {
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: "600",
-    color: colors.red[100],
+    color: colors.red[200],
   },
 });
 

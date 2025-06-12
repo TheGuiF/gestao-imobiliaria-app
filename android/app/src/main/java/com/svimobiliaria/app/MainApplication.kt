@@ -1,4 +1,4 @@
-package com.anonymous.gestaoimobiliariaapp
+package com.svimobiliaria.app
 
 import android.app.Application
 import android.content.res.Configuration

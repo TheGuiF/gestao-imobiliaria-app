@@ -1,3 +1,4 @@
+// funções para salvar e buscar dados no AsyncStorage do app
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const IMOVEIS_KEY = '@imobiliaria:imoveis';

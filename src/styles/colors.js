@@ -1,4 +1,8 @@
 export const colors = {
+  overlay: {
+    100: "rgba(0, 0, 0, 0.5)",
+  },
+
   gray: {
     100: "#FFFFFF",
     200: "#F5F5F5",
@@ -14,10 +18,7 @@ export const colors = {
   red: {
     100: "#EF4444",
     200: "#B91C1C",
+    300: "#910827",
   },
 
-  green: {
-    500: "#22C55E",
-    600: "#16A34A",
-  },
 };

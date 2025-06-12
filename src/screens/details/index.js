@@ -1,3 +1,5 @@
+//tela de detalhes do imovel, da pra editar e deletar, 
+//o envio da documentacao tbm é por aqui
 import { useLayoutEffect, useEffect, useState } from "react";
 import {
   View,
@@ -5,35 +7,34 @@ import {
   ScrollView,
   TouchableOpacity,
   Alert,
-  Modal,
   Linking,
-  Platform,
 } from "react-native";
 
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Feather from "@expo/vector-icons/Feather";
-import * as DocumentPicker from 'expo-document-picker';
-import * as ImagePicker from 'expo-image-picker';
-import * as FileSystem from 'expo-file-system';
+import * as DocumentPicker from "expo-document-picker";
+import * as ImagePicker from "expo-image-picker";
+import * as FileSystem from "expo-file-system";
 
+import { useCardCreation } from "../../contexts/cardCreationContext";
+import DeleteButton from "../../components/deleteButton";
 import { Separator } from "../../components/separator";
+import CustomAlert from "../../components/customAlert";
 import SwiperComponent from "../../components/swiper";
 import InfoItem from "../../components/infoItem";
-import CustomAlert from "../../components/customAlert";
 import { colors } from "../../styles/colors";
-import { useCardCreation } from "../../contexts/cardCreationContext";
 import styles from "./styles";
 
 const DetailScreen = ({ route, navigation }) => {
   const { imovel: initialImovel } = route.params;
-  const { deletarImovel, buscarImovelPorId, atualizarImovel } = useCardCreation();
+  const { buscarImovelPorId, atualizarImovel } = useCardCreation();
   const [imovel, setImovel] = useState(initialImovel);
-  const [showOptionsModal, setShowOptionsModal] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
-  const [alertTitle, setAlertTitle] = useState('');
-  const [alertMessage, setAlertMessage] = useState('');
+  const [alertTitle, setAlertTitle] = useState("");
+  const [alertMessage, setAlertMessage] = useState("");
 
+  //atualiza os dados do imovel ao abrir a tela ou quando o id muda
   useEffect(() => {
     const refreshImovel = async () => {
       if (imovel?.id) {
@@ -46,6 +47,7 @@ const DetailScreen = ({ route, navigation }) => {
     refreshImovel();
   }, [imovel?.id]);
 
+  // configura os botões de editar e deletar no header
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -57,39 +59,35 @@ const DetailScreen = ({ route, navigation }) => {
               }
             }}
           >
-            <Feather name="edit" size={22} color="black" />
+            <Feather name="edit" size={22} color={colors.gray[600]} />
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={async () => {
-              try {
-                await deletarImovel(imovel.id);
-                navigation.goBack();
-              } catch (error) {
-                console.error("Erro ao deletar imóvel:", error);
-                Alert.alert("Erro", "Não foi possível deletar o imóvel.");
-              }
-            }}
-          >
-            <Feather name="trash-2" size={22} color="red" />
-          </TouchableOpacity>
+          <DeleteButton
+            imovelId={imovel.id}
+            onSuccess={() => navigation.goBack()}
+          />
         </View>
       ),
     });
-  }, [navigation, deletarImovel, imovel]);
+  }, [navigation, imovel]);
 
+  //imagem padrao do imovel se n for adicionada previamente
   const defaultImage = require("../../assets/default.png");
 
+  //formata o valor do imovel, coloca pontos e virgulas
   const formatCurrency = (value) => {
-    if (!value) return '0';
-    return value.toString().replace(/\D/g, '')
-      .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+    if (!value) return "0";
+    return value
+      .toString()
+      .replace(/\D/g, "")
+      .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
   };
 
+  //adiciona um documento ao imovel
   const handleAddDocument = async () => {
     try {
-      console.log('Iniciando seleção de documento...');
+      console.log("Iniciando seleção de documento...");
       const result = await DocumentPicker.getDocumentAsync({
-        type: 'application/pdf',
+        type: "application/pdf",
         copyToCacheDirectory: true,
       });
 
@@ -97,47 +95,54 @@ const DetailScreen = ({ route, navigation }) => {
         const selectedDoc = result.assets[0];
         const fileName = selectedDoc.name;
         const newPath = `${FileSystem.documentDirectory}pdfs/${fileName}`;
-        
-        await FileSystem.makeDirectoryAsync(`${FileSystem.documentDirectory}pdfs`, {
-          intermediates: true
-        });
+
+        await FileSystem.makeDirectoryAsync(
+          `${FileSystem.documentDirectory}pdfs`,
+          {
+            intermediates: true,
+          }
+        );
 
         await FileSystem.copyAsync({
           from: selectedDoc.uri,
-          to: newPath
+          to: newPath,
         });
 
         const newDoc = {
           uri: newPath,
           name: fileName,
-          type: 'pdf'
+          type: "pdf",
         };
-        
+
         const updatedImovel = {
           ...imovel,
-          documentos: [...(imovel.documentos || []), newDoc]
+          documentos: [...(imovel.documentos || []), newDoc],
         };
-        
+
         await atualizarImovel(imovel.id, updatedImovel);
         setImovel(updatedImovel);
-        setAlertTitle('Aviso');
-        setAlertMessage('Documento adicionado com sucesso!');
+        setAlertTitle("Sucesso!");
+        setAlertMessage("Documento adicionado!");
         setShowAlert(true);
       }
     } catch (error) {
-      console.error('Erro ao adicionar documento:', error);
-      setAlertTitle('Erro');
-      setAlertMessage('Não foi possível adicionar o documento. ' + error.message);
+      console.error("Erro ao adicionar documento:", error);
+      setAlertTitle("Erro");
+      setAlertMessage(
+        "Não foi possível adicionar o documento. " + error.message
+      );
       setShowAlert(true);
     }
   };
 
+  //adiciona uma imagem ao imovel
   const handleAddImage = async () => {
     try {
-      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      const { status } =
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (status !== "granted") {
-        setAlertTitle('Aviso');
-        setAlertMessage('Permita acesso à galeria para adicionar imagens.');
+        setAlertTitle("Aviso");
+        setAlertMessage("Permita acesso à galeria para adicionar imagens.");
         setShowAlert(true);
         return;
       }
@@ -152,151 +157,117 @@ const DetailScreen = ({ route, navigation }) => {
       if (!result.canceled && result.assets && result.assets.length > 0) {
         const fileName = `image_${Date.now()}.jpg`;
         const newPath = `${FileSystem.documentDirectory}images/${fileName}`;
-        
-        await FileSystem.makeDirectoryAsync(`${FileSystem.documentDirectory}images`, {
-          intermediates: true
-        });
+
+        await FileSystem.makeDirectoryAsync(
+          `${FileSystem.documentDirectory}images`,
+          {
+            intermediates: true,
+          }
+        );
 
         await FileSystem.copyAsync({
           from: result.assets[0].uri,
-          to: newPath
+          to: newPath,
         });
 
         const newImages = [...(imovel.imagens || []), newPath];
         const updatedImovel = { ...imovel, imagens: newImages };
-        
+
         await atualizarImovel(imovel.id, updatedImovel);
         setImovel(updatedImovel);
-        setAlertTitle('Aviso');
-        setAlertMessage('Imagem adicionada com sucesso!');
+        setAlertTitle("Sucesso!");
+        setAlertMessage("Imagem adicionada!");
         setShowAlert(true);
       }
     } catch (error) {
-      console.error('Erro ao adicionar imagem:', error);
-      setAlertTitle('Erro');
-      setAlertMessage('Não foi possível adicionar a imagem.');
+      console.error("Erro ao adicionar imagem:", error);
+      setAlertTitle("Erro");
+      setAlertMessage("Não foi possível adicionar a imagem.");
       setShowAlert(true);
     }
   };
 
+  //deleta uma imagem do imovel
   const handleDeleteImage = async (index) => {
     try {
       const imageToDelete = imovel.imagens[index];
       const newImages = imovel.imagens.filter((_, i) => i !== index);
       const updatedImovel = { ...imovel, imagens: newImages };
-      
+
       await atualizarImovel(imovel.id, updatedImovel);
-      
-      // Delete the file from storage
+
       try {
         await FileSystem.deleteAsync(imageToDelete);
       } catch (e) {
-        console.warn('Erro ao deletar arquivo de imagem:', e);
+        console.warn("Erro ao deletar arquivo de imagem:", e);
       }
-      
+
       setImovel(updatedImovel);
-      Alert.alert('Sucesso', 'Imagem removida com sucesso!');
+      Alert.alert("Sucesso", "Imagem removida com sucesso!");
     } catch (error) {
-      console.error('Erro ao remover imagem:', error);
-      Alert.alert('Erro', 'Não foi possível remover a imagem.');
+      console.error("Erro ao remover imagem:", error);
+      Alert.alert("Erro", "Não foi possível remover a imagem.");
     }
   };
 
+  //remove um documento do imovel
   const handleDeleteDocument = async (index) => {
     try {
       const docToDelete = imovel.documentos[index];
       const newDocs = imovel.documentos.filter((_, i) => i !== index);
       const updatedImovel = { ...imovel, documentos: newDocs };
-      
+
       await atualizarImovel(imovel.id, updatedImovel);
-      
-      // Delete the file from storage
+
       try {
         await FileSystem.deleteAsync(docToDelete.uri);
       } catch (e) {
-        console.warn('Erro ao deletar arquivo do documento:', e);
+        console.warn("Erro ao deletar arquivo do documento:", e);
       }
-      
+
       setImovel(updatedImovel);
-      Alert.alert('Sucesso', 'Documento removido com sucesso!');
+      Alert.alert("Sucesso", "Documento removido com sucesso!");
     } catch (error) {
-      console.error('Erro ao remover documento:', error);
-      Alert.alert('Erro', 'Não foi possível remover o documento.');
+      console.error("Erro ao remover documento:", error);
+      Alert.alert("Erro", "Não foi possível remover o documento.");
     }
   };
 
+  //abre um pdf do imovel
   const handleOpenDocument = async (uri) => {
     try {
-      // Check if file exists
+      // ve se o arquivo existe
       const fileInfo = await FileSystem.getInfoAsync(uri);
       if (!fileInfo.exists) {
-        throw new Error('Arquivo não encontrado');
+        throw new Error("Arquivo não encontrado");
       }
 
-      // Get content URI for the file
+      // pega o uri do arquivo
       const contentUri = await FileSystem.getContentUriAsync(uri);
-      console.log('Content URI gerado:', contentUri);
+      console.log("Content URI gerado:", contentUri);
 
-      // Try to open the file with the system default app
+      // tenta abrir o arquivo com o app padrao do sistema
       const supported = await Linking.canOpenURL(contentUri);
       if (supported) {
         await Linking.openURL(contentUri);
       } else {
-        Alert.alert('Erro', 'Não foi possível abrir o documento.');
+        Alert.alert("Erro", "Não foi possível abrir o documento.");
       }
     } catch (error) {
-      console.error('Erro ao abrir documento:', error);
-      Alert.alert('Erro', 'Não foi possível abrir o documento. ' + error.message);
+      console.error("Erro ao abrir documento:", error);
+      Alert.alert(
+        "Erro",
+        "Não foi possível abrir o documento. " + error.message
+      );
     }
   };
 
-  const OptionsModal = () => (
-    <Modal
-      animationType="slide"
-      transparent={true}
-      visible={showOptionsModal}
-      onRequestClose={() => setShowOptionsModal(false)}
-    >
-      <View style={styles.modalContainer}>
-        <View style={styles.modalContent}>
-          <Text style={styles.modalTitle}>Opções</Text>
-          <TouchableOpacity
-            style={styles.modalButton}
-            onPress={() => {
-              setShowOptionsModal(false);
-              handleAddImage();
-            }}
-          >
-            <MaterialIcons name="photo-library" size={24} color="#fff" />
-            <Text style={styles.modalButtonText}>Adicionar Imagem</Text>
-          </TouchableOpacity>
-          
-          <TouchableOpacity
-            style={styles.modalButton}
-            onPress={() => {
-              setShowOptionsModal(false);
-              handleAddDocument();
-            }}
-          >
-            <MaterialIcons name="attach-file" size={24} color="#fff" />
-            <Text style={styles.modalButtonText}>Adicionar PDF</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[styles.modalButton, { backgroundColor: colors.gray[400] }]}
-            onPress={() => setShowOptionsModal(false)}
-          >
-            <Text style={styles.modalButtonText}>Cancelar</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </Modal>
-  );
-
+  //se o imovel nao existir, retorna null
   if (!imovel) {
     return null;
   }
 
+  //se o imovel existir, retorna a tela de detalhes
   return (
     <ScrollView style={styles.container}>
       <View style={styles.swiperContent}>
@@ -343,28 +314,37 @@ const DetailScreen = ({ route, navigation }) => {
             value={imovel.situacao}
           />
         </View>
+        <Separator />
 
         <View style={styles.taxContainer}>
           <Text style={styles.taxTitle}>Taxas</Text>
-          <Separator />
-          <InfoItem
-            icon={<MaterialIcons name="attach-money" size={24} color={colors.gray[600]} />}
-            label="IPTU Anual:"
-            value={`R$ ${formatCurrency(imovel.iptu)}`}
-          />
+
+          <Separator width="80%" />
+          <View style={styles.taxContentInfo}>
+            <Text style={styles.taxInfo}>IPTU Anual</Text>
+            <Text style={[styles.taxInfo, { color: colors.red[200] }]}>
+              R$ {formatCurrency(imovel.iptu)}
+            </Text>
+          </View>
+          <Separator width="80%" />
         </View>
+
+        <Separator />
 
         <View style={styles.documentsContainer}>
           <Text style={styles.documentsTitle}>Documentos do Imóvel</Text>
-          <Separator />
           {imovel.documentos && imovel.documentos.length > 0 ? (
             imovel.documentos.map((doc, index) => (
               <View key={index} style={styles.documentItemContainer}>
-                <TouchableOpacity 
+                <TouchableOpacity
                   style={styles.documentItem}
                   onPress={() => handleOpenDocument(doc.uri)}
                 >
-                  <MaterialIcons name="description" size={24} color={colors.gray[600]} />
+                  <MaterialIcons
+                    name="description"
+                    size={24}
+                    color={colors.gray[600]}
+                  />
                   <Text style={styles.documentName}>{doc.name}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => handleDeleteDocument(index)}>
@@ -377,12 +357,17 @@ const DetailScreen = ({ route, navigation }) => {
           )}
         </View>
 
-        <TouchableOpacity 
-          style={styles.addButton}
-          onPress={() => setShowOptionsModal(true)}
+        <TouchableOpacity
+          style={[styles.addButton, { marginBottom: 10 }]}
+          onPress={handleAddImage}
         >
-          <MaterialIcons name="add" size={24} color="#fff" />
-          <Text style={styles.addButtonText}>Adicionar Arquivo/Imagem</Text>
+          <Text style={styles.addButtonText}>Adicionar Imagem</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.addButton}
+          onPress={handleAddDocument}
+        >
+          <Text style={styles.addButtonText}>Adicionar PDF</Text>
         </TouchableOpacity>
       </View>
 
@@ -391,9 +376,8 @@ const DetailScreen = ({ route, navigation }) => {
         title={alertTitle}
         message={alertMessage}
         onClose={() => setShowAlert(false)}
+        icon="check-circle"
       />
-      
-      <OptionsModal />
     </ScrollView>
   );
 };
