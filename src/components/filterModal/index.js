@@ -9,13 +9,16 @@ import {
   ScrollView,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
+
+import SelectField from "../selectField";
 import { colors } from "../../styles/colors";
 import styles from "./styles";
 
 const FilterModal = ({ visible, onClose, onApplyFilters }) => {
   const [priceRange, setPriceRange] = useState({ min: "", max: "" });
   const [bedrooms, setBedrooms] = useState("");
-  const [location, setLocation] = useState("");
+  const [tipoImovel, setTipoImovel] = useState("");
+  const [situacao, setSituacao] = useState("");
   const [parkingSpaces, setParkingSpaces] = useState("");
 
   const handleApplyFilters = () => {
@@ -29,7 +32,8 @@ const FilterModal = ({ visible, onClose, onApplyFilters }) => {
           : null,
       },
       bedrooms: bedrooms ? parseInt(bedrooms) : null,
-      location: location || null,
+      tipoImovel: tipoImovel || null,
+      situacao: situacao || null,
       parkingSpaces: parkingSpaces ? parseInt(parkingSpaces) : null,
     };
 
@@ -108,12 +112,20 @@ const FilterModal = ({ visible, onClose, onApplyFilters }) => {
             </View>
 
             <View style={styles.filterSection}>
-              <Text style={styles.filterTitle}>Localização</Text>
-              <TextInput
-                style={[styles.input, styles.fullWidthInput]}
-                placeholder="Digite o endereço"
-                value={location}
-                onChangeText={setLocation}
+              <SelectField
+                label="Tipo de Imóvel"
+                value={tipoImovel}
+                options={["Apartamento", "Casa", "Comercial", "Sítio", "Lote", "Armazém"]}
+                onChange={setTipoImovel}
+              />
+            </View>
+
+            <View style={styles.filterSection}>
+              <SelectField
+                label="Situação"
+                value={situacao}
+                options={["Disponível", "Indisponível"]}
+                onChange={setSituacao}
               />
             </View>
 

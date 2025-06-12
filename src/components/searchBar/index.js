@@ -10,15 +10,13 @@ const SearchBar = ({ search, setSearch, onFilterPress }) => {
       <TouchableOpacity onPress={onFilterPress} style={styles.filterButton}>
         <MaterialIcons name="menu" size={24} color={colors.red[200]} />
       </TouchableOpacity>
-      <View style={styles.searchContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Pesquisar por imóvel"
-          value={search}
-          onChangeText={setSearch}
-        />
-      </View>
-      <MaterialIcons name="search" size={24} color={colors.red[200]} />
+      <TextInput
+        style={styles.input}
+        placeholder="Pesquisar por imóvel"
+        value={search}
+        onChangeText={setSearch}
+      />
+      <MaterialIcons name="search" size={24} color={colors.red[200]} style={styles.searchIcon} />
     </View>
   );
 };

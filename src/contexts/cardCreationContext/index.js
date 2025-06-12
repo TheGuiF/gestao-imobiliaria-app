@@ -64,13 +64,7 @@ export const CardCreationProvider = ({ children }) => {
   // Função para formatar área
   const formatArea = (value) => {
     if (!value) return "";
-    const numericValue = value.toString().replace(/\D/g, "");
-    if (numericValue.length <= 2) return numericValue;
-
-    const integerPart = numericValue.slice(0, -2);
-    const decimalPart = numericValue.slice(-2);
-
-    return `${integerPart},${decimalPart}`;
+    return value.toString().replace(/\D/g, "");
   };
 
   //atualiza os dados do formulário enquanto o user preenche

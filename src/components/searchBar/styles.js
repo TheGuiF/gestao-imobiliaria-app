@@ -9,10 +9,7 @@ export default StyleSheet.create({
     borderRadius: 25,
     paddingHorizontal: 16,
     paddingVertical: 10,
-    margin: "4%",
-    marginTop: "0%",
     elevation: 2,
-    gap: 30,
   },
   filterButton: {
     padding: 8,
@@ -20,8 +17,13 @@ export default StyleSheet.create({
   },
   input: {
     flex: 1,
+    marginLeft: 15,
     color: colors.gray[600],
-    marginRight: 10,
     fontSize: 16,
+    marginRight: 10,
+  },
+  searchIcon: {
+    position: "absolute",
+    right: 16,
   },
 });

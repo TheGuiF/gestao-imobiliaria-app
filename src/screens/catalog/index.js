@@ -65,10 +65,14 @@ const CatalogScreen = ({ navigation }) => {
           (item) => parseInt(item.dormitorios) === activeFilters.bedrooms
         );
       }
-      if (activeFilters.location) {
-        const locationTerm = activeFilters.location.toLowerCase();
-        filtrados = filtrados.filter((item) =>
-          item.endereco?.toLowerCase().includes(locationTerm)
+      if (activeFilters.tipoImovel) {
+        filtrados = filtrados.filter(
+          (item) => item.tipoImovel === activeFilters.tipoImovel
+        );
+      }
+      if (activeFilters.situacao) {
+        filtrados = filtrados.filter(
+          (item) => item.situacao === activeFilters.situacao
         );
       }
       if (activeFilters.parkingSpaces !== null) {

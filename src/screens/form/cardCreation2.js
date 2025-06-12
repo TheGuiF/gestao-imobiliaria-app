@@ -8,6 +8,7 @@ import { useCardCreation } from "../../contexts/cardCreationContext";
 import CustomAlert from "../../components/customAlert";
 import RedButton from "../../components/redButton";
 import InputField from "../../components/input";
+import SelectField from "../../components/selectField";
 import { colors } from "../../styles/colors";
 import styles from "./styles";
 
@@ -40,6 +41,27 @@ const CardCreationScreen2 = ({ navigation }) => {
           <Feather name="home" size={70} color={colors.red[200]} />
         </View>
         <View style={styles.card}>
+          <SelectField
+            label="Tipo de Imóvel:"
+            value={formData.tipoImovel}
+            options={[
+              "Apartamento",
+              "Casa",
+              "Comercial",
+              "Sítio",
+              "Lote",
+              "Armazém",
+            ]}
+            onChange={(value) => updateFormData({ tipoImovel: value })}
+            hasError={submitted && !formData.tipoImovel}
+          />
+          <SelectField
+            label="Situação:"
+            value={formData.situacao}
+            options={["Disponível", "Indisponível"]}
+            onChange={(value) => updateFormData({ situacao: value })}
+            hasError={submitted && !formData.situacao}
+          />
           <InputField
             label="Valor da Venda (R$):"
             value={formData.valorVenda}
@@ -50,12 +72,6 @@ const CardCreationScreen2 = ({ navigation }) => {
             hasError={submitted && !formData.valorVenda}
           />
           <InputField
-            label="Situação:"
-            value={formData.situacao}
-            onChangeText={(text) => updateFormData({ situacao: text })}
-            hasError={submitted && !formData.situacao}
-          />
-          <InputField
             label="Taxa de IPTU anual (R$):"
             value={formData.iptu}
             onChangeText={(text) =>
@@ -63,12 +79,6 @@ const CardCreationScreen2 = ({ navigation }) => {
             }
             keyboardType="numeric"
             hasError={submitted && !formData.iptu}
-          />
-          <InputField
-            label="Tipo de Imóvel:"
-            value={formData.tipoImovel}
-            onChangeText={(text) => updateFormData({ tipoImovel: text })}
-            hasError={submitted && !formData.tipoImovel}
           />
 
           <RedButton title="Continuar" onPress={handleContinuar} />

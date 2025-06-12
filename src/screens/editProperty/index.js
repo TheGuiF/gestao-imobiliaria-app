@@ -7,6 +7,7 @@ import CustomAlert from "../../components/customAlert";
 import RedButton from "../../components/redButton";
 import AddImages from "../../components/addImage";
 import InputField from "../../components/input";
+import SelectField from '../../components/selectField';
 import styles from "./styles";
 
 const EditPropertyScreen = ({ route, navigation }) => {
@@ -74,9 +75,9 @@ const EditPropertyScreen = ({ route, navigation }) => {
   const handleInputChange = (field, value) => {
     let formattedValue = value;
     if (field === "valorVenda" || field === "iptu") {
-      formattedValue = value.replace(/[^0-9]/g, "");
+      formattedValue = formatCurrency(value);
     } else if (field === "area") {
-      formattedValue = value.replace(/[^0-9]/g, "");
+      formattedValue = formatArea(value);
     }
 
     setLocalData((prev) => ({
@@ -100,7 +101,7 @@ const EditPropertyScreen = ({ route, navigation }) => {
         <InputField
           label="Área (m²)"
           value={localData.area}
-          onChangeText={(value) => handleInputChange("area", value)}
+          onChangeText={(value) => handleInputChange("area", value.replace(/[^0-9]/g, ""))}
           keyboardType="numeric"
         />
         <InputField
@@ -115,6 +116,18 @@ const EditPropertyScreen = ({ route, navigation }) => {
           onChangeText={(value) => handleInputChange("garagens", value)}
           keyboardType="numeric"
         />
+          <SelectField
+            label="Tipo do Imóvel"
+            value={localData.tipoImovel}
+            options={["Apartamento", "Casa", "Comercial", "Sítio", "Lote", "Armazém"]}
+            onChange={(value) => handleInputChange("tipoImovel", value)}
+          />
+          <SelectField
+            label="Situação"
+            value={localData.situacao}
+            options={["Disponível", "Indisponível"]}
+            onChange={(value) => handleInputChange("situacao", value)}
+          />
         <InputField
           label="Valor de Venda (R$)"
           value={localData.valorVenda}
@@ -122,20 +135,10 @@ const EditPropertyScreen = ({ route, navigation }) => {
           keyboardType="numeric"
         />
         <InputField
-          label="Situação"
-          value={localData.situacao}
-          onChangeText={(value) => handleInputChange("situacao", value)}
-        />
-        <InputField
           label="IPTU Anual (R$)"
           value={localData.iptu}
           onChangeText={(value) => handleInputChange("iptu", value)}
           keyboardType="numeric"
-        />
-        <InputField
-          label="Tipo do Imóvel"
-          value={localData.tipoImovel}
-          onChangeText={(value) => handleInputChange("tipoImovel", value)}
         />
 
         <AddImages initialImages={imovel.imagens || []} />

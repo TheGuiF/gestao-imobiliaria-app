@@ -24,7 +24,7 @@ export default function HomeScreen({ navigation }) {
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate("Form")}
+          onPress={() => navigation.navigate("CardCreation1")}
         >
           <MaterialIcons name="home" size={32} color={colors.red[200]} />
           <Text style={styles.buttonText}>Adicionar Imóvel</Text>

@@ -45,7 +45,9 @@ const DetailScreen = ({ route, navigation }) => {
       }
     };
     refreshImovel();
-  }, [imovel?.id]);
+    const unsubscribe = navigation.addListener('focus', refreshImovel);
+    return unsubscribe;
+  }, [imovel?.id, navigation]);
 
   // configura os botões de editar e deletar no header
   useLayoutEffect(() => {
@@ -76,10 +78,17 @@ const DetailScreen = ({ route, navigation }) => {
   //formata o valor do imovel, coloca pontos e virgulas
   const formatCurrency = (value) => {
     if (!value) return "0";
-    return value
-      .toString()
-      .replace(/\D/g, "")
-      .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+    const numericValue = value.toString().replace(/\D/g, "");
+    if (numericValue.length <= 2) return numericValue;
+
+    const integerPart = numericValue.slice(0, -2);
+    const decimalPart = numericValue.slice(-2);
+
+    const formattedInteger = integerPart.replace(
+      /(\d)(?=(\d{3})+(?!\d))/g,
+      "$1."
+    );
+    return `${formattedInteger},${decimalPart}`;
   };
 
   //adiciona um documento ao imovel
@@ -300,7 +309,7 @@ const DetailScreen = ({ route, navigation }) => {
               />
             }
             label="Área Construída:"
-            value={`${imovel.area}m²`}
+            value={`${imovel.area?.toString().replace(/\D/g, "")}m²`}
           />
           <InfoItem
             icon={
