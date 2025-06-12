@@ -1,52 +1,39 @@
-import { View, Image, StyleSheet } from "react-native";
+//bolinhas de carrossel no details
+import { View, Image } from "react-native";
 import Swiper from "react-native-swiper";
 import { colors } from "../../styles/colors";
+import styles from "./styles";
 
 export default function SwiperComponent({ images = [] }) {
   const hasImages = images && images.length > 0;
+  const defaultImage = require("../../assets/default.png");
+
+  const renderImage = (source, index) => {
+    const imageSource = typeof source === "string" ? { uri: source } : source;
+    const isDefaultImage = !hasImages || source === defaultImage;
+
+    return (
+      <View key={index} style={styles.slide}>
+        <Image
+          source={imageSource}
+          style={styles.image}
+          defaultSource={defaultImage}
+          resizeMode="cover"
+        />
+      </View>
+    );
+  };
 
   return (
     <Swiper
-      dotStyle={{
-        backgroundColor: colors.gray[600],
-        borderColor: colors.gray[600],
-        borderWidth: 2,
-        width: 2,
-        height: 2,
-        borderRadius: 10,
-      }}
+      style={styles.wrapper}
+      dotStyle={styles.dot}
+      activeDotStyle={styles.activeDot}
       activeDotColor={colors.gray[100]}
-      activeDotStyle={{
-        borderColor: colors.gray[600],
-        borderWidth: 1,
-        width: 12,
-        height: 12,
-        borderRadius: 10,
-      }}
     >
-      {hasImages ? (
-        images.map((uri, index) => (
-          <View key={index} style={styles.slide}>
-            <Image source={{ uri }} style={{ width: "100%", height: 250 }} />
-          </View>
-        ))
-      ) : (
-        <View style={styles.slide}>
-          <Image
-            source={require("../../assets/default.png")}
-            style={{ width: "100%", height: 250 }}
-          />
-        </View>
-      )}
+      {hasImages
+        ? images.map((source, index) => renderImage(source, index))
+        : renderImage(defaultImage, 0)}
     </Swiper>
   );
 }
-
-const styles = StyleSheet.create({
-  slide: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: colors.gray[100],
-  },
-});

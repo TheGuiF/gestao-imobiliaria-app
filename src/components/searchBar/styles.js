@@ -1,23 +1,27 @@
 import { StyleSheet } from "react-native";
 import { colors } from "../../styles/colors";
 
-const styles = StyleSheet.create({
+export default StyleSheet.create({
   container: {
+    flexDirection: "row",
+    alignItems: "center",
     backgroundColor: colors.gray[100],
     borderRadius: 25,
     paddingHorizontal: 16,
     paddingVertical: 10,
     margin: "4%",
-    marginTop: "12%",
-    flexDirection: "row",
-    alignItems: "center",
+    marginTop: "0%",
     elevation: 2,
-    gap: 10,
+    gap: 30,
+  },
+  filterButton: {
+    padding: 8,
+    paddingRight: 0,
   },
   input: {
     flex: 1,
-    fontSize: 14,
+    color: colors.gray[600],
+    marginRight: 10,
+    fontSize: 16,
   },
 });
-
-export default styles;

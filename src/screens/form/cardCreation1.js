@@ -1,27 +1,29 @@
+//primeira etapa do formulario de criacao do imovel
 import { useState } from "react";
-import { View, ScrollView, KeyboardAvoidingView, Alert } from "react-native";
+import { View, ScrollView, KeyboardAvoidingView } from "react-native";
 
 import Feather from "@expo/vector-icons/Feather";
-import InputField from "../../components/input";
-import RedButton from "../../components/redButton";
-import styles from "./styles";
-import { colors } from "../../styles/colors";
+
 import { useCardCreation } from "../../contexts/cardCreationContext";
+import CustomAlert from "../../components/customAlert";
+import RedButton from "../../components/redButton";
+import InputField from "../../components/input";
+import { colors } from "../../styles/colors";
+import styles from "./styles";
 
 const CardCreationScreen1 = ({ navigation }) => {
   const { formData, updateFormData } = useCardCreation();
   const [submitted, setSubmitted] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
 
+  // valida se todos os campos obrigatórios foram preenchidos antes de ir pra proxima etapa
   const handleContinuar = () => {
     setSubmitted(true);
 
     const { endereco, area, dormitorios, garagens } = formData;
 
     if (!endereco || !area || !dormitorios || !garagens) {
-      Alert.alert(
-        "Campos obrigatórios",
-        "Por favor, preencha todos os campos."
-      );
+      setShowAlert(true);
       return;
     }
 
@@ -32,7 +34,7 @@ const CardCreationScreen1 = ({ navigation }) => {
     <KeyboardAvoidingView behavior="padding">
       <ScrollView contentContainerStyle={styles.container}>
         <View style={styles.logo}>
-          <Feather name="home" size={70} color={colors.red[100]} />
+          <Feather name="home" size={70} color={colors.red[200]} />
         </View>
 
         <View style={styles.card}>
@@ -44,7 +46,7 @@ const CardCreationScreen1 = ({ navigation }) => {
           />
 
           <InputField
-            label="Tamanho da área construída:"
+            label="Tamanho da área construída (m²):"
             value={formData.area}
             onChangeText={(text) =>
               updateFormData({ area: text.replace(/[^0-9]/g, "") })
@@ -75,6 +77,13 @@ const CardCreationScreen1 = ({ navigation }) => {
 
           <RedButton title="Continuar" onPress={handleContinuar} />
         </View>
+
+        <CustomAlert
+          visible={showAlert}
+          title="Campos Obrigatórios"
+          message="Por favor, preencha todos os campos."
+          onClose={() => setShowAlert(false)}
+        />
       </ScrollView>
     </KeyboardAvoidingView>
   );

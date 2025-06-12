@@ -1,18 +1,23 @@
-import { View, TextInput } from "react-native";
+//barra de pesquisa pro catalogo
+import { View, TextInput, TouchableOpacity } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import styles from "./styles";
 import { colors } from "../../styles/colors";
+import styles from "./styles";
 
-const SearchBar = ({ search, setSearch }) => {
+const SearchBar = ({ search, setSearch, onFilterPress }) => {
   return (
     <View style={styles.container}>
-      <MaterialIcons name="menu" size={24} color={colors.red[200]} />
-      <TextInput
-        style={styles.input} //Padronização de Pesquisa
-        placeholder="Pesquisar por imóveis" //Falta criar funcionalidade
-        value={search} //de pesquisa em si
-        onChangeText={setSearch}
-      />
+      <TouchableOpacity onPress={onFilterPress} style={styles.filterButton}>
+        <MaterialIcons name="menu" size={24} color={colors.red[200]} />
+      </TouchableOpacity>
+      <View style={styles.searchContainer}>
+        <TextInput
+          style={styles.input}
+          placeholder="Pesquisar por imóvel"
+          value={search}
+          onChangeText={setSearch}
+        />
+      </View>
       <MaterialIcons name="search" size={24} color={colors.red[200]} />
     </View>
   );

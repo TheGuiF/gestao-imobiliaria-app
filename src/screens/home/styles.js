@@ -1,49 +1,54 @@
-// styles.js (arquivo de estilo)
 import { StyleSheet } from "react-native";
 import { colors } from "../../styles/colors";
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
-    alignItems: "center",
-    justifyContent: "center",
     backgroundColor: colors.gray[200],
   },
+  topContent: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 20,
+  },
   quote: {
-    fontSize: 24,
-    fontWeight: 800,
+    fontSize: 25,
+    fontWeight: "800",
     color: colors.red[300],
     textAlign: "center",
     position: "absolute",
+    top: "15%",
+    paddingHorizontal: 20,
   },
-  img: {
-    width: 350,
-    height: 350,
-    alignSelf: "center",
-    marginBottom: 250,
+  logo: {
+    width: 480,
+    height: 480,
+    marginTop: -150,
+  },
+  buttonContainer: {
+    position: "absolute",
+    bottom: 40,
+    left: 0,
+    right: 0,
+    paddingHorizontal: 20,
+    gap: 16,
   },
   button: {
-    elevation: 3,
-    width: 310,
-    height: 120,
+    backgroundColor: colors.gray[100],
+    borderColor: colors.gray[500],
+    borderWidth: 1,
     borderRadius: 8,
-    marginBottom: 18,
-    outlineWidth: 0.3,
+    elevation: 2,
+    height: 100,
     alignItems: "center",
     justifyContent: "center",
-    outlineColor: colors.red[300],
-    backgroundColor: colors.gray[100],
+    gap: 4,
   },
   buttonText: {
-    fontSize: 25,
+    fontSize: 20,
+    fontWeight: "600",
     color: colors.red[200],
-    fontWeight: 600,
-  },
-  area: {
-    marginTop: 200,
-    bottom: "6%",
-    position: "absolute",
   },
 });
 

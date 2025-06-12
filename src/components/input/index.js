@@ -1,4 +1,6 @@
+//input padronizado
 import { View, TextInput, Text } from "react-native";
+import { colors } from "../../styles/colors";
 import styles from "./style";
 
 const InputField = ({
@@ -13,11 +15,11 @@ const InputField = ({
       <Text style={styles.label}>{label}</Text>
       <TextInput
         value={value}
-        onChangeText={onChangeText} // Criação do componente
-        placeholder=" . . ." // padronizado de Input
+        onChangeText={onChangeText}
+        placeholder=" . . ."
         style={[styles.input, hasError && styles.inputError]}
-        placeholderTextColor="#999"
-        keyboardType={keyboardType}
+        placeholderTextColor={colors.gray[600]}
+        keyboardType={keyboardType} //serve pra falar se é só numero ou letra
         inputMode={keyboardType === "numeric" ? "numeric" : undefined}
       />
     </View>

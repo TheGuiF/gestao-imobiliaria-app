@@ -1,29 +1,43 @@
 {
   "expo": {
     "name": "SV Imobiliária",
-    "slug": "gestao-imobiliaria-app",
+    "slug": "sv-imobiliaria",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
-    "newArchEnabled": true,
     "splash": {
-      "image": "./assets/splash-icon.png",
+      "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "userInterfaceStyle": "light",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.svimobiliaria.app"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "package": "com.svimobiliaria.app"
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
+    "plugins": [
+      "expo-image-picker",
+      [
+        "expo-sqlite",
+        {
+          "androidPackage": "expo.modules.sqlite"
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "c2b9de00-845a-4c02-8518-c1b1fddff397"
+      }
     }
   }
 }

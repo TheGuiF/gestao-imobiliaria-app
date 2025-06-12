@@ -1,4 +1,7 @@
-import React from "react";
+//componente de adicionar imagens
+//ele exibe um botão para adicionar imagens e um scroll view em row
+// com as imagens adicionadas, e um botão para remover a imagem
+import React, { useEffect } from "react";
 import {
   Alert,
   View,
@@ -9,66 +12,75 @@ import {
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 
-import styles from "./styles";
-import RedButton from "../redButton";
 import { useCardCreation } from "../../contexts/cardCreationContext";
+import RedButton from "../redButton";
+import styles from "./styles";
 
-export default function AddImages() {
+export default function AddImages({ initialImages }) {
   const { formData, updateFormData } = useCardCreation();
 
-  const pickImages = async () => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status !== "granted") {
-      Alert.alert("Permissão necessária", "Permita acesso à galeria.");
-      return;
+  // initialImages: array de imagens iniciais serve pra passar as imagens que ja existem no imovel
+  useEffect(() => {
+    if (initialImages) {
+      updateFormData({ imagens: initialImages });
     }
+  }, [initialImages]);
 
-    const result = await ImagePicker.launchImageLibraryAsync({
-      allowsMultipleSelection: true,
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      quality: 1,
-    });
+  // abre a galeria para selecionar uma ou mais imagens e add ao contexto
+  const pickImages = async () => {
+    try {
+      const { status } =
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== "granted") {
+        Alert.alert("Permissão necessária", "Permita acesso à galeria.");
+        return;
+      }
 
-    if (!result.canceled) {
-      const newImages = result.assets.map((asset) => ({
-        uri: asset.uri,
-        id: asset.assetId || asset.uri,
-      }));
-
-      // Atualiza no contexto
-      updateFormData({
-        imagens: [...formData.imagens, ...newImages],
+      const result = await ImagePicker.launchImageLibraryAsync({
+        allowsMultipleSelection: true,
+        mediaTypes: "images",
+        quality: 1,
+        base64: false,
       });
+
+      if (!result.canceled && result.assets) {
+        const newImages = result.assets.map((asset) => asset.uri);
+        updateFormData({
+          imagens: [...(formData.imagens || []), ...newImages],
+        });
+      }
+    } catch (error) {
+      console.error("Erro ao selecionar imagens:", error);
+      Alert.alert("Erro", "Não foi possível selecionar as imagens.");
     }
   };
 
-  const removeImage = (id) => {
-    const updatedImages = formData.imagens.filter((img) => img.id !== id);
+  // remove a imagem escolhida da lista de imagens do imovel
+  const removeImage = (uri) => {
+    const updatedImages = formData.imagens.filter((img) => img !== uri);
     updateFormData({ imagens: updatedImages });
   };
 
   return (
     <View style={styles.container}>
-      <RedButton
-        style={styles.pickerButtom}
-        title="Adicionar Imagens"
-        onPress={pickImages}
-      />
+      <RedButton title="Adicionar Imagens" onPress={pickImages} />
 
-      {formData.imagens.length > 0 && (
+      {formData.imagens && formData.imagens.length > 0 && (
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
-          style={{ marginVertical: 20, paddingTop: 10 }}
+          style={styles.imageScroll}
         >
-          {formData.imagens.map((img) => (
-            <View
-              key={img.id}
-              style={{ marginRight: 10, position: "relative" }}
-            >
-              <Image source={{ uri: img.uri }} style={styles.image} />
+          {formData.imagens.map((uri, index) => (
+            <View key={index} style={styles.imageContainer}>
+              <Image
+                source={{ uri }}
+                style={styles.image}
+                defaultSource={require("../../assets/default.png")}
+                resizeMode="cover"
+              />
               <TouchableOpacity
-                onPress={() => removeImage(img.id)}
+                onPress={() => removeImage(uri)}
                 style={styles.removeButton}
               >
                 <Text style={styles.removeButtonText}>X</Text>

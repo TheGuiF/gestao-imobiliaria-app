@@ -1,3 +1,4 @@
+//botão vermelho padronizado
 import { TouchableOpacity, Text } from "react-native";
 import styles from "./styles";
 import { Platform } from "react-native";
