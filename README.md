@@ -89,12 +89,12 @@ Você é livre para usar, copiar, modificar, mesclar, publicar, distribuir, subl
 - jhonatadavn - Contribuições no projeto e desenvolvimento do Banco de Dados
 
 ## 📧 Contato
-Guilherme Farias: 
-- Linkedin: https://www.linkedin.com/in/guilherme-farias-59a915350/
-- GitHub: https://github.com/TheGuiF
-Jhonatã Caldeira:
-- Linkedin: https://www.linkedin.com/in/jhonatã-caldeira-ab6529232/
-- GitHub: https://github.com/jhonatadavn
+- Guilherme Farias: 
+  - Linkedin: https://www.linkedin.com/in/guilherme-farias-59a915350/
+  - GitHub: https://github.com/TheGuiF
+- Jhonatã Caldeira:
+  - Linkedin: https://www.linkedin.com/in/jhonatã-caldeira-ab6529232/
+  - GitHub: https://github.com/jhonatadavn
 
 ## 🙏 Agradecimentos
 - **Alessandro Larangeiras** - Pela orientação e suporte durante o desenvolvimento do projeto
@@ -116,7 +116,6 @@ Jhonatã Caldeira:
 
 <p float="left">
   <img src="./screenshots/criacao-imovel-1.png" width="200"/>
-  <img src="./screenshots/criacao-imovel-2.png" width="200"/>
   <img src="./screenshots/criacao-imovel-3.png" width="200"/>
   <img src="./screenshots/criacao-imovel-4.png" width="200"/>
 </p>
