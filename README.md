@@ -116,6 +116,7 @@ Você é livre para usar, copiar, modificar, mesclar, publicar, distribuir, subl
 
 <p float="left">
   <img src="./screenshots/criacao-imovel-1.png" width="200"/>
+  <img src="./screenshots/criacao-imovel-2.png" width="200"/>
   <img src="./screenshots/criacao-imovel-3.png" width="200"/>
   <img src="./screenshots/criacao-imovel-4.png" width="200"/>
 </p>
