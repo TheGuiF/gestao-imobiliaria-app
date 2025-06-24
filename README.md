@@ -119,7 +119,6 @@ Jhonatã Caldeira:
   <img src="./screenshots/criacao-imovel-2.png" width="200"/>
   <img src="./screenshots/criacao-imovel-3.png" width="200"/>
   <img src="./screenshots/criacao-imovel-4.png" width="200"/>
-  <img src="./screenshots/criacao-imovel-5.png" width="200"/>
 </p>
 
 ---
